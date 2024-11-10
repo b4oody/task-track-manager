@@ -21,7 +21,11 @@ class TaskType(models.Model):
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=100, unique=True, db_index=True)
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        db_index=True,
+    )
 
     def __str__(self) -> str:
         return self.name
@@ -32,6 +36,7 @@ class Worker(AbstractUser):
         Position,
         on_delete=models.CASCADE,
         related_name="workers",
+        null=True,
     )
 
     def __str__(self) -> str:
