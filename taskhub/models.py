@@ -39,8 +39,13 @@ class Worker(AbstractUser):
         null=True,
     )
 
+    class Meta:
+        verbose_name = "Worker"
+        verbose_name_plural = "Workers"
+
     def __str__(self) -> str:
-        return f"{self.username}({self.position}): ({self.first_name} {self.last_name})"
+        return (f"{self.username}({self.position}): "
+                f"({self.first_name} {self.last_name})")
 
 
 class Team(models.Model):
@@ -68,9 +73,11 @@ class Project(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def status_display(self):
+        return "Completed" if self.is_completed else "In Progress"
 
     def __str__(self) -> str:
-        return f"{self.name}: ({self.deadline} {self.is_completed})"
+        return f"{self.name}: ({self.deadline} {self.status_display()})"
 
 
 class Task(models.Model):
