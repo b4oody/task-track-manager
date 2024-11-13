@@ -1,0 +1,273 @@
+/* Загальні скидання */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Основні стилі для тіла сторінки та типографії */
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    line-height: 1.6;
+    color: #4a1c1c; /* Темно-бордовий для тексту */
+    /* Зміщуємо фон трохи вниз */
+    background: url("/static/img/background-main.jpg");
+    background-size: cover;
+}
+
+/* Стиль для заголовка (header) */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #4a1c1c;
+}
+
+header .logo {
+    height: 80px;
+    border-radius: 40px;
+}
+
+header .navigation ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header .navigation ul li a {
+    color: #4a1c1c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header .navigation ul li a:hover {
+    color: #b23b3b; /* Темний червоний для наведення */
+}
+
+/* Фонова картинка для основного контенту (main) */
+main {
+    min-height: calc(100vh - 60px); /* 60px — висота футера, налаштуйте за потреби */
+    border: 2px solid #ffc4c4; /* Світло-рожева рамка */
+    background-color: rgba(255, 240, 230, 0.85); /* Теплий кремовий з м'якою прозорістю */
+    padding: 20px 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-size: cover;
+    background-attachment: fixed;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+
+}
+
+.main-index{
+    display: flex;
+    justify-content: center; /* Центрує по горизонталі */
+    align-items: center;     /* Центрує по вертикалі */
+}
+/* Центрування контенту у #intro */
+#intro {
+    text-align: center; /* Центрує текст всередині */
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+#intro h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #4a1c1c;
+}
+
+#intro p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #4a1c1c;
+}
+
+#intro button {
+    background-color: #b23b3b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+#intro button:hover {
+    background-color: #8e2828;
+}
+/* Напівпрозорий фон для тексту */
+main .content {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Стиль для футера (footer) */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #4a1c1c;
+    font-size: 14px;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Основний стиль для кнопок */
+button {
+    background-color: #b23b3b; /* Основний насичений червоний */
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #8e2828; /* Темніший для наведення */
+}
+
+/* Стиль для посилань */
+a, .task-card h2 a, .project-card h2 a, .team-card h2 a {
+    color: #b23b3b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover, .task-card h2 a:hover, .project-card h2 a:hover, .team-card h2 a:hover {
+    color: #8e2828;
+    text-decoration: underline;
+}
+
+/* Стиль для кнопок "Назад" */
+.back-button {
+    background-color: #d3a6a6; /* Світлий відтінок червоного */
+    color: #4a1c1c;
+    padding: 6px 12px;
+    font-size: 14px;
+    float: right;
+    right: 20px;
+    top: 20px;
+}
+
+.back-button:hover {
+    background-color: #b08585; /* Темніший відтінок для наведення */
+}
+
+/* Специфічні стилі для кнопок "Редагувати" та "Архівувати" */
+.edit-btn {
+    background-color: #f29e9e; /* Світло-рожевий для кнопки "Редагувати" */
+    color: #4a1c1c;
+}
+
+.edit-btn:hover {
+    background-color: #e08787;
+}
+
+.archive-btn {
+    background-color: #a63e3e; /* Насичений темно-червоний для "Архівувати" */
+    color: #fff;
+}
+
+.archive-btn:hover {
+    background-color: #7a2e2e;
+}
+
+/* Стиль для карток завдань, проектів, команд */
+.task-card, .project-card, .team-card {
+    background-color: rgba(255, 240, 240, 0.9);
+    border: 2px solid #ffc4c4;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: transform 0.2s;
+}
+
+.task-card:hover, .project-card:hover, .team-card:hover {
+    transform: translateY(-3px);
+    border-color: #b23b3b;
+}
+
+/* Оформлення статистики в профілі користувача */
+.summary-info {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.summary-item {
+    background-color: rgba(255, 235, 235, 0.95);
+    border: 2px solid #ffc4c4;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    transition: transform 0.2s;
+}
+
+.summary-item h3 {
+    color: #b23b3b;
+    margin-bottom: 10px;
+}
+
+.summary-item p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a1c1c;
+}
+
+.summary-item:hover {
+    transform: translateY(-5px);
+    border-color: #b23b3b;
+}
+
+/* Сітка для карток учасників */
+.member-grid, .member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Загальні стилі для фільтрів та форм */
+select, input[type="file"], textarea {
+    border: 1px solid #b23b3b;
+    border-radius: 5px;
+    padding: 8px;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #4a1c1c;
+}
+
+/* Адаптивний дизайн */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
+    header .navigation ul {
+        flex-direction: column;
+    }
+
+    .summary-info {
+        flex-direction: column;
+    }
+
+    .back-button {
+        position: static;
+        margin: 10px 0;
+    }
+}
