@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Список проектів</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+
+{% block content %}
+  <main class="main">
+    <!-- Кнопка "Назад" -->
+    <div class="back-button-container">
+      <a href="{% url "taskhub:profile" %}" class="back-button">Назад до профілю</a>
+    </div>
+
+
+    <section class="project-controls">
+      <h1>Проекти</h1>
+      <!-- Фільтрація за статусом -->
+      <div class="filter-section">
+        <label for="status-filter">Фільтр за статусом:</label>
+        <select id="status-filter">
+          <option value="all">Всі</option>
+          <option value="active">Активні</option>
+          <option value="completed">Завершені</option>
+          <option value="archived">Архівовані</option>
+        </select>
+      </div>
+      <!-- Управління проектами -->
+      <div class="project-actions">
+        <button class="create-project-btn">Створити новий проект</button>
+      </div>
+    </section>
+
+    <!-- Список проектів -->
+    <section class="projects-list">
+      {% for project in worker_projects %}
+        <div class="project-card">
+          <h2><a href="#">{{ project.name }}</a></h2>
+          <p><strong>Дедлайн:</strong> {{ project.deadline }}</p>
+          <p><strong>Статус:</strong> {{ project.status_display }}</p>
+          <button class="edit-btn">Редагувати</button>
+          <button class="archive-btn">Архівувати</button>
+        </div>
+      {% endfor %}
+    </section>
+  </main>
+{% endblock %}

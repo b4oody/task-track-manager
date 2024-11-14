@@ -48,3 +48,14 @@ def get_profile(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "profile/profile.html", context=context)
+
+
+def projects_page_view(request: HttpRequest) -> HttpResponse:
+    worker = Worker.objects.get(pk=request.user.id)
+    worker_projects = Project.objects.filter(
+        team__in=worker.teams.all()
+    ).select_related("team").prefetch_related("team__members")
+    context = {
+        "worker_projects": worker_projects,
+    }
+    return render(request, "projects/projects.html", context=context)
