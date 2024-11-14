@@ -38,8 +38,8 @@ def get_profile(request: HttpRequest) -> HttpResponse:
         finished_tasks=Count("id", filter=Q(is_completed=True)),
     )
     finished_projects_count = Project.objects.filter(
-        team__in=worker.teams.all()
-    ).distinct().count()
+        Q(team__in=worker.teams.all()), Q(is_completed=True)
+    ).count()
     context = {
         "worker": worker,
         "active_tasks": tasks["active_tasks"],
