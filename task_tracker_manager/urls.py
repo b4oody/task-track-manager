@@ -21,5 +21,6 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("taskhub.urls", namespace="taskhub"),),
+    path("accounts/", include("django.contrib.auth.urls"),),
 
 ] + debug_toolbar_urls()
