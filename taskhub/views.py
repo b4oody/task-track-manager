@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 
 from taskhub.form import RegistrationForm
-from taskhub.models import Worker, Project, Position
+from taskhub.models import Worker, Project, Position, Team
 
 
 def get_index_page(request: HttpRequest) -> HttpResponse:
@@ -59,3 +59,11 @@ def projects_page_view(request: HttpRequest) -> HttpResponse:
         "worker_projects": worker_projects,
     }
     return render(request, "projects/projects.html", context=context)
+
+
+def teams_page_view(request: HttpRequest) -> HttpResponse:
+    worker = Worker.objects.get(pk=request.user.id)
+    context = {
+        "worker_teams": Team.objects.filter(members=worker)
+    }
+    return render(request, "teams/user-teams.html", context=context)
