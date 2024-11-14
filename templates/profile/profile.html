@@ -1,0 +1,77 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Кабінет користувача</title>
+{% endblock %}
+
+
+{% block header %}
+  {% include 'includes/headers/header-main.html' %}
+{% endblock %}
+
+{% block content %}
+  <main>
+    <!-- Профіль користувача -->
+    <section id="user-profile">
+      <h2>Профіль користувача</h2>
+      <div class="profile-info">
+        {% if worker.username %}
+          <p><strong>Нікнейм:</strong> {{ worker.username }}</p>
+        {% endif %}
+        {% if worker.first_name %}
+          <p><strong>Ім’я:</strong> {{ worker.first_name }}</p>
+        {% endif %}
+        {% if worker.position %}
+          <p><strong>Посада:</strong> {{ worker.position }}</p>
+        {% endif %}
+        {% if worker.email %}
+          <p><strong>Контакт:</strong> {{ worker.email }}</p>
+        {% endif %}
+      </div>
+      <div class="user-actions">
+        <button class="create-team-btn">Створити нову команду</button>
+        <button class="create-project-btn">Створити новий проект</button>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="create-project-btn" type="submit">Logout</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Панель зведеної інформації -->
+    <section id="summary-panel">
+      <h2>Статистика продуктивності</h2>
+      <div class="summary-info">
+        <div class="summary-item">
+          <h3>Активні завдання</h3>
+          <p>{{ active_tasks }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Завершені проекти</h3>
+          <p>{{ finished_projects }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Виконані завдання</h3>
+          <p>{{ finished_tasks }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Огляд завдань -->
+    <section id="tasks-overview">
+      <h2>Мої завдання</h2>
+      {% for task in worker.tasks.all %}
+        <div class="task-list">
+
+          <div class="task-card">
+
+            <h3>{{ task.name }}</h3>
+            <p>{{ task.description }}</p>
+            <button>Переглянути</button>
+
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  </main>
+{% endblock %}
