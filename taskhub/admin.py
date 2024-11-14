@@ -28,7 +28,7 @@ class PositionAdmin(admin.ModelAdmin):
 
 
 @admin.register(Worker)
-class WorkerAdmin(admin.ModelAdmin):
+class WorkerAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("position",)
     fieldsets = (UserAdmin.fieldsets +
                  (("Additional info", {"fields": ("position",
