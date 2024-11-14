@@ -1,0 +1,16 @@
+{% load static %}
+
+{% block header %}
+  <!-- Header -->
+  <header>
+    <img src="{% static "img/logo.png" %}" alt="Logo" class="logo">
+    <nav class="navigation">
+      <ul>
+        <li><a href={% url "taskhub:index" %}>Головна</a></li>
+        <li><a href="user-teams.html">Команди</a></li>
+        <li><a href="projects.html">Проекти</a></li>
+        <li><a href="tasks.html">Завдання</a></li>
+      </ul>
+    </nav>
+  </header>
+{% endblock %}

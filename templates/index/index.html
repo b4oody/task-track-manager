@@ -1,0 +1,20 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+  <title>IT Company Task Manager</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-index.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main-index">
+    <section id="intro">
+      <h1>Ласкаво просимо до Task Manager</h1>
+      <p>Система для оптимізації роботи вашої команди в стилі японського мінімалізму</p>
+      <button onclick="window.location.href='{% url "taskhub:profile" %}'">Почати роботу</button>
+    </section>
+  </main>
+{% endblock %}
