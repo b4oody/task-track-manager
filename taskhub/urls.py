@@ -4,7 +4,8 @@ from taskhub.views import (
     get_profile,
     sign_up,
     projects_page_view,
-    teams_page_view
+    teams_page_view,
+    tasks_page_view,
 )
 
 urlpatterns = [
@@ -15,6 +16,10 @@ urlpatterns = [
     path("profile/projects/", projects_page_view, name="projects"),
 
     path("profile/teams/", teams_page_view, name="teams"),
+
+    path("profile/tasks/", tasks_page_view, name="tasks"),
+
+
 ]
 
 app_name = 'taskhub'

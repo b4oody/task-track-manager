@@ -7,9 +7,9 @@
     <nav class="navigation">
       <ul>
         <li><a href={% url "taskhub:index" %}>Головна</a></li>
-        <li><a href="user-teams.html">Команди</a></li>
-        <li><a href="projects.html">Проекти</a></li>
-        <li><a href="tasks.html">Завдання</a></li>
+        <li><a href="{% url 'taskhub:teams' %}">Команди</a></li>
+        <li><a href="{% url 'taskhub:projects' %}">Проекти</a></li>
+        <li><a href="{% url 'taskhub:tasks' %}">Завдання</a></li>
       </ul>
     </nav>
   </header>
