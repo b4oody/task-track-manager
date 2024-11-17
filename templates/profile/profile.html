@@ -11,6 +11,15 @@
 
 {% block content %}
   <main>
+    <!-- Кнопка "Logout" -->
+    <div style="float: right" class="back-button-container" >
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="create-project-btn" type="submit">Logout</button>
+      </form>
+    </div>
+
+
     <!-- Профіль користувача -->
     <section id="user-profile">
       <h2>Профіль користувача</h2>
@@ -29,12 +38,9 @@
         {% endif %}
       </div>
       <div class="user-actions">
-        <button class="create-team-btn">Створити нову команду</button>
-        <button class="create-project-btn">Створити новий проект</button>
-        <form method="post" action="{% url 'logout' %}">
-          {% csrf_token %}
-          <button class="create-project-btn" type="submit">Logout</button>
-        </form>
+        <a href="#" class="btn-link">Створити нову команду</a>
+        <a href="#" class="btn-link">Створити новий проект</a>
+        <a href="#" class="btn-link">Створити нове завдання</a>
       </div>
     </section>
 

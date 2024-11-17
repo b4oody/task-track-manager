@@ -140,6 +140,29 @@ button:hover {
     background-color: #8e2828; /* Темніший для наведення */
 }
 
+
+/* Стиль для посилань у вигляді кнопок */
+a.btn-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none; /* Забираємо підкреслення */
+    color: #fff; /* Білий текст */
+    background-color: #b23b3b; /* Основний червоний */
+    border-radius: 5px; /* Заокруглені кути */
+    transition: background-color 0.3s ease; /* Плавний перехід кольору */
+    cursor: pointer;
+}
+
+a.btn-link:hover {
+    background-color: #e36f6f;
+    text-decoration: none;
+    color: #fff;
+}
+
+
 /* Стиль для посилань */
 a, .task-card h2 a, .project-card h2 a, .team-card h2 a {
     color: #b23b3b;
