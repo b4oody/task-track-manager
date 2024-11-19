@@ -348,6 +348,10 @@ form button:hover {
     background-color: #8e2828; /* Темніший відтінок для наведення */
 }
 
+.errors{
+    color: red;
+}
+
 /* Стиль для посилань внизу форми */
 form p {
     text-align: center;
@@ -414,3 +418,9 @@ form label {
     display: block;
 }
 
+.errorlist {
+    color: red;
+    list-style: none;
+    font-weight: bold;
+
+}
