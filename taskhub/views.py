@@ -4,7 +4,7 @@ from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 
-from taskhub.form import RegistrationForm
+from taskhub.form import RegistrationForm, CreateTeamForm
 from taskhub.models import Worker, Project, Position, Team, Task
 
 
@@ -76,3 +76,17 @@ def tasks_page_view(request: HttpRequest) -> HttpResponse:
     }
     return render(request, "tasks/tasks.html", context=context)
 
+
+def create_team_form_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = CreateTeamForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("taskhub:teams")
+    else:
+        form = CreateTeamForm()
+    return render(
+        request,
+        "profile/create_team_form.html",
+        context={"form": form}
+    )
