@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Створення команди</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main-index">
+    <div class="content" style="width: 100%; max-width: 500px;">
+      <h1>Створення проєкт</h1>
+      <form class="form" action="{% url 'taskhub:create-project' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Створити команду</button>
+      </form>
+
+    </div>
+  </main>
+{% endblock %}
