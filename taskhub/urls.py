@@ -7,6 +7,7 @@ from taskhub.views import (
     teams_page_view,
     tasks_page_view,
     create_team_form_view,
+    create_project_form_view,
 
 )
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path("profile/create-team/", create_team_form_view, name="create-team"),
 
     path("profile/tasks/", tasks_page_view, name="tasks"),
+    path("profile/create-project/", create_project_form_view, name="create-project"),
 
 
 ]
