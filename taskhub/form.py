@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from taskhub.models import Worker, Position, Team
+from taskhub.models import Worker, Position, Team, Project
 
 
 class RegistrationForm(UserCreationForm):
@@ -69,3 +69,36 @@ class CreateTeamForm(forms.ModelForm):
         members = self.cleaned_data["member_ids"]
         team.members.set(members)
         return team
+
+
+class CreateProjectForm(forms.ModelForm):
+    team_name = forms.CharField(
+        label="Team name",
+        widget=forms.TextInput(attrs={"placeholder": "Text team name"})
+    )
+
+    class Meta:
+        model = Project
+        fields = [
+            "name",
+            "description",
+            "deadline",
+            "is_completed",
+            "team_name"
+        ]
+
+    def clean_team_name(self):
+        team_name = self.cleaned_data.get("team_name")
+        if not team_name:
+            raise forms.ValidationError("Team name cannot be empty. Please enter a valid name.")
+        if not Team.objects.filter(name=team_name).exists():
+            raise forms.ValidationError(f"Team with name '{team_name}' does not exist.")
+        return team_name
+
+    def save(self, commit=True):
+        project = super().save(commit=False)
+        team_name = self.cleaned_data["team_name"]
+        project.team = Team.objects.get(name=team_name)
+        if commit:
+            project.save()
+        return project
