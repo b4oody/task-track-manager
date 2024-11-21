@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from taskhub.models import Worker, Position, Team, Project
+from taskhub.models import Worker, Position, Team, Project, Task, TaskType
 
 
 class RegistrationForm(UserCreationForm):
@@ -102,3 +102,66 @@ class CreateProjectForm(forms.ModelForm):
         if commit:
             project.save()
         return project
+
+
+class CreateTasksForm(forms.ModelForm):
+    assignees_ids = forms.CharField(
+        label="Assignees IDs",
+        help_text="Enter user IDs separated by commas",
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+    )
+
+    project_name = forms.CharField(
+        label="Project name",
+        widget=forms.TextInput(attrs={"placeholder": "Text project name"})
+    )
+
+    class Meta:
+        model = Task
+        fields = [
+            "name",
+            "description",
+            "deadline",
+            "is_completed",
+            "priority",
+            "task_type",
+            "assignees_ids",
+            "project_name"
+        ]
+
+    def clean_assignees_ids(self):
+        data_ids = self.cleaned_data.get("assignees_ids")
+        ids = [id.strip() for id in data_ids.split(",") if id.strip()]
+        if not ids:
+            raise forms.ValidationError("Member IDs cannot be empty. Please enter valid IDs.")
+
+        try:
+            workers = Worker.objects.filter(pk__in=ids)
+            if len(workers) != len(ids):
+                raise forms.ValidationError("One or more user IDs are invalid. Please check the IDs.")
+            return workers
+        except ValueError:
+            raise forms.ValidationError("Enter valid integers separated by commas.")
+
+    def clean_project_name(self):
+        project_name = self.cleaned_data.get("project_name")
+        if not project_name:
+            raise forms.ValidationError("Project name cannot be empty. Please enter a valid name.")
+        try:
+            project = Project.objects.get(name=project_name)
+            return project
+        except Project.DoesNotExist:
+            raise forms.ValidationError(f"Project with name '{project_name}' does not exist.")
+
+    def save(self, commit=True):
+        task = super().save(commit=False)
+
+        assignees = self.cleaned_data.get("assignees_ids")
+        project = self.cleaned_data.get("project_name")
+
+        task.project = project
+
+        if commit:
+            task.save()
+            task.assignees.set(assignees)
+        return task
