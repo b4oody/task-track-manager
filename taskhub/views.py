@@ -1,11 +1,23 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views import generic
 
-from taskhub.form import RegistrationForm, CreateTeamForm, CreateProjectForm
-from taskhub.models import Worker, Project, Position, Team, Task
+from taskhub.form import (
+    RegistrationForm,
+    CreateTeamForm,
+    CreateProjectForm,
+)
+from taskhub.models import (
+    Worker,
+    Project,
+    Position,
+    Team,
+    Task, TaskType
+)
 
 
 def get_index_page(request: HttpRequest) -> HttpResponse:
@@ -105,3 +117,16 @@ def create_project_form_view(request: HttpRequest) -> HttpResponse:
         "profile/create_project_form.html",
         context={"form": form}
     )
+
+class CreateTypeView(generic.CreateView):
+    model = TaskType
+    fields = "__all__"
+    template_name = "tasks/create_type_form.html"
+    success_url = reverse_lazy("taskhub:tasks")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        referer = self.request.POST.get("referer", None)
+        if referer:
+            return HttpResponseRedirect(referer)
+        return response
