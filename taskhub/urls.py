@@ -25,7 +25,7 @@ urlpatterns = [
     path("profile/create-team/", create_team_form_view, name="create-team"),
 
     path("profile/tasks/", tasks_page_view, name="tasks"),
-
+    path("profile/create-task/", create_task_form_view, name="create-task"),
     path("profile/create-type/", CreateTypeView.as_view(), name="create-type"),
 
 

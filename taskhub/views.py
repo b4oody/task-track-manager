@@ -9,7 +9,7 @@ from django.views import generic
 from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
-    CreateProjectForm,
+    CreateProjectForm, CreateTasksForm,
 )
 from taskhub.models import (
     Worker,
@@ -118,6 +118,7 @@ def create_project_form_view(request: HttpRequest) -> HttpResponse:
         context={"form": form}
     )
 
+
 class CreateTypeView(generic.CreateView):
     model = TaskType
     fields = "__all__"
@@ -130,3 +131,18 @@ class CreateTypeView(generic.CreateView):
         if referer:
             return HttpResponseRedirect(referer)
         return response
+
+
+def create_task_form_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = CreateTasksForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("taskhub:tasks")
+    else:
+        form = CreateTasksForm()
+    return render(
+        request,
+        "profile/create_task_form.html",
+        context={"form": form}
+    )
