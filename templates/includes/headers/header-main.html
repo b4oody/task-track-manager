@@ -7,6 +7,7 @@
     <nav class="navigation">
       <ul>
         <li><a href={% url "taskhub:index" %}>Головна</a></li>
+        <li><a href="{% url "taskhub:profile" %}">{{ user.username }}</a></li>
         <li><a href="{% url 'taskhub:teams' %}">Команди</a></li>
         <li><a href="{% url 'taskhub:projects' %}">Проекти</a></li>
         <li><a href="{% url 'taskhub:tasks' %}">Завдання</a></li>
