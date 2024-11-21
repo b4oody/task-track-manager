@@ -1,0 +1,27 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Створення завдання</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main-index">
+    <div class="content" style="width: 100%; max-width: 500px;">
+      <h1>Створення завдання</h1>
+      <form class="form" action="{% url 'taskhub:create-task' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div>
+          <a href="{% url 'taskhub:create-type' %}">Створити тип завдання</a><br>
+          <a href="{% url 'taskhub:create-team' %}">Перейти на створення команди </a><br>
+          <a href="{% url 'taskhub:create-project' %}">Перейти на створення проєкту</a>
+        </div>
+        <button type="submit">Створити завдання</button>
+      </form>
+    </div>
+  </main> 
+{% endblock %}
