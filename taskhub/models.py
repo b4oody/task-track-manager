@@ -145,7 +145,7 @@ class Commentary(models.Model):
     commentary_content = models.TextField()
 
     class Meta:
-        ordering = ["-created_time"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"Comment by {self.worker} on {self.task} ({self.created_at})"
