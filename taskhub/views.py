@@ -146,3 +146,19 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
         "profile/create_task_form.html",
         context={"form": form}
     )
+
+
+def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
+    task = (
+        Task.objects.select_related("project__team", "task_type")
+        .prefetch_related("assignees", "assignees__position")
+        .get(pk=pk)
+    )
+    context = {
+        "task": task,
+    }
+    return render(
+        request,
+        "tasks/task-details.html",
+        context
+    )

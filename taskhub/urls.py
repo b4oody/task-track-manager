@@ -11,6 +11,8 @@ from taskhub.views import (
     create_task_form_view,
     CreateTypeView,
 
+    task_details_page_view,
+
 )
 
 urlpatterns = [
@@ -27,6 +29,10 @@ urlpatterns = [
     path("profile/tasks/", tasks_page_view, name="tasks"),
     path("profile/create-task/", create_task_form_view, name="create-task"),
     path("profile/create-type/", CreateTypeView.as_view(), name="create-type"),
+
+
+
+    path("profile/task/<int:pk>/", task_details_page_view, name="task-detail"),
 
 
 

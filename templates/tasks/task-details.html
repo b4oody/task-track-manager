@@ -1,0 +1,71 @@
+{% extends "base/base.html" %}
+
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main">
+
+    <!-- Кнопка "Назад" -->
+    <div class="back-button-container">
+      <a href="tasks.html" class="back-button">Назад до списку завдань</a>
+    </div>
+
+
+    <!-- Інформація про завдання -->
+    <section class="task-details">
+      <h1>{{ task.name }}</h1>
+      <p><strong>Статус:</strong> {{ task.status_display }}</p>
+      <p><strong>Пріоритет:</strong> {{ task.priority }}</p>
+      <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
+      <br>
+      <p><strong>Команда:</strong> {{ task.project.team.name }}</p>
+      <p><strong>Виконавці завдання:</strong> {{ task.assignees.all|join:", " }}</p>
+      <br>
+      <p><strong>Опис:</strong> {{ task.description }}</p>
+      
+      <button class="edit-btn">Редагувати завдання</button>
+    </section>
+
+    <!-- Коментарі -->
+    <section class="task-comments">
+      <h2>Коментарі</h2>
+      <div class="comment-box">
+        <div class="comment">
+          <p><strong>Олексій:</strong> Перевірю сьогодні ввечері.</p>
+        </div>
+        <div class="comment">
+          <p><strong>Ірина:</strong> Оновлення виглядає добре, але потрібні деякі виправлення.</p>
+        </div>
+      </div>
+      <form class="comment-form">
+        <label>
+          <textarea placeholder="Написати коментар..."></textarea>
+        </label>
+        <button type="submit">Додати коментар</button>
+      </form>
+    </section>
+
+    <!-- Прикріплені файли -->
+    <section class="task-attachments">
+      <h2>Прикріплені файли</h2>
+      <div class="file-list">
+        <div class="file-item">
+          <p>Документ_1.pdf</p>
+          <button>Завантажити</button>
+        </div>
+        <div class="file-item">
+          <p>Презентація.pptx</p>
+          <button>Завантажити</button>
+        </div>
+        <!-- Додати більше файлів тут -->
+      </div>
+      <form class="upload-form">
+        <input type="file">
+        <button type="submit">Прикріпити файл</button>
+      </form>
+    </section>
+  </main>
+{% endblock %}

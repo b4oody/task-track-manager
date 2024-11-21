@@ -74,7 +74,7 @@
 
             <h3>{{ task.name }}</h3>
             <p>{{ task.description }}</p>
-            <button>Переглянути</button>
+            <a href="{% url 'taskhub:task-detail' task.pk %}" class="btn-link">Переглянути</a>
 
           </div>
         </div>
