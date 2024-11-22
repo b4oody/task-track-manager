@@ -9,7 +9,7 @@ from taskhub.models import (
     Worker,
     Project,
     Task,
-    Team
+    Team, Commentary
 )
 
 
@@ -138,3 +138,10 @@ class TaskAdmin(admin.ModelAdmin):
     def get_assignees(self, obj):
         return ", ".join([worker.username for worker in obj.assignees.all()])
     get_assignees.short_description = "Assignees"
+
+
+@admin.register(Commentary)
+class CommentaryAdmin(admin.ModelAdmin):
+    list_display = ("worker", "task", "created_at")
+    search_fields = ("commentary_content", "worker__username", "task__name")
+    list_filter = ("created_at",)
