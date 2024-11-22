@@ -16,7 +16,7 @@ from taskhub.models import (
     Project,
     Position,
     Team,
-    Task, TaskType
+    Task, TaskType, Commentary
 )
 
 
@@ -151,7 +151,7 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
 def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     task = (
         Task.objects.select_related("project__team", "task_type")
-        .prefetch_related("assignees", "assignees__position")
+        .prefetch_related("assignees", "assignees__position", "commentaries__worker")
         .get(pk=pk)
     )
     context = {
