@@ -12,7 +12,7 @@
 {% block content %}
   <main>
     <!-- Кнопка "Logout" -->
-    <div style="float: right" class="back-button-container" >
+    <div style="float: right" class="back-button-container">
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button class="create-project-btn" type="submit">Logout</button>
@@ -54,6 +54,10 @@
           <p>{{ active_tasks }}</p>
         </div>
         <div class="summary-item">
+          <h3>Активні проєкти</h3>
+          <p>{{ active_projects }}</p>
+        </div>
+        <div class="summary-item">
           <h3>Завершені проекти</h3>
           <p>{{ finished_projects }}</p>
         </div>
@@ -67,18 +71,22 @@
     <!-- Огляд завдань -->
     <section id="tasks-overview">
       <h2>Мої завдання</h2>
-      {% for task in worker.tasks.all %}
-        <div class="task-list">
-
+      <div class="task-container">
+        {% for task in page_obj %}
           <div class="task-card">
-
-            <h3>{{ task.name }}</h3>
-            <p>{{ task.description }}</p>
-            <a href="{% url 'taskhub:task-detail' task.pk %}" class="btn-link">Переглянути</a>
-
+            <a href="{% url 'taskhub:task-detail' task.pk %}" class="task-name">{{ task.name }}</a>
+            <span class="task-meta">{{ task.created_at|date:"d M, Y, H:i" }}</span>
+            <p><strong>Deadline:</strong> {{ task.deadline|date:"d M, Y" }}</p>
+            <p class="task-description">{{ task.description }}</p>
           </div>
-        </div>
-      {% endfor %}
+        {% empty %}
+          <h3 class="no-tasks">Поки немає завдань, відпочивайте!</h3>
+        {% endfor %}
+      </div>
     </section>
+
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
   </main>
 {% endblock %}
