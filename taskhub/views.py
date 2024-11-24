@@ -154,8 +154,19 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
         .prefetch_related("assignees", "assignees__position", "commentaries__worker")
         .get(pk=pk)
     )
+    if request.method == "POST":
+        comment_form = CreateCommentaryForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.worker = request.user
+            new_comment.task = task
+            new_comment.save()
+            return redirect("taskhub:task-detail", pk=task.pk)
+    else:
+        comment_form = CreateCommentaryForm()
     context = {
         "task": task,
+        "comment_form": comment_form,
     }
     return render(
         request,
