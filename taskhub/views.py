@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -9,14 +10,14 @@ from django.views import generic
 from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
-    CreateProjectForm, CreateTasksForm,
+    CreateProjectForm, CreateTasksForm, CreateCommentaryForm,
 )
 from taskhub.models import (
     Worker,
     Project,
     Position,
     Team,
-    Task, TaskType, Commentary
+    Task, TaskType
 )
 
 
@@ -42,6 +43,24 @@ def sign_up(request: HttpRequest) -> HttpResponse:
         {"form": form, "positions": positions})
 
 
+def pagination(request: HttpRequest, queryset, items_per_page=5):
+    """
+    Функція для пагінації.
+
+    Аргументи:
+        request: HttpRequest - об'єкт запиту.
+        queryset: QuerySet або список - дані, які потрібно розбити на сторінки.
+        items_per_page: int - кількість елементів на сторінку (за замовчуванням 5).
+
+    Повертає:
+        page_obj: об'єкт пагінації для шаблону.
+    """
+    paginator = Paginator(queryset, items_per_page)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return page_obj
+
+
 @login_required
 def get_profile(request: HttpRequest) -> HttpResponse:
     worker = Worker.objects.prefetch_related("teams", "tasks").get(pk=request.user.id)
@@ -52,11 +71,17 @@ def get_profile(request: HttpRequest) -> HttpResponse:
     finished_projects_count = Project.objects.filter(
         Q(team__in=worker.teams.all()), Q(is_completed=True)
     ).count()
+    active_projects_count = Project.objects.filter(
+        Q(team__in=worker.teams.all()), Q(is_completed=False)
+    ).count()
+    page_obj = pagination(request, worker.tasks.all(), items_per_page=5)
     context = {
         "worker": worker,
         "active_tasks": tasks["active_tasks"],
         "finished_projects": finished_projects_count,
+        "active_projects": active_projects_count,
         "finished_tasks": tasks["finished_tasks"],
+        "page_obj": page_obj
     }
 
     return render(request, "profile/profile.html", context=context)
