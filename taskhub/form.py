@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from taskhub.models import Worker, Position, Team, Project, Task, TaskType
+from taskhub.models import Worker, Position, Team, Project, Task, TaskType, Commentary
 
 
 class RegistrationForm(UserCreationForm):
@@ -165,3 +165,9 @@ class CreateTasksForm(forms.ModelForm):
             task.save()
             task.assignees.set(assignees)
         return task
+
+
+class CreateCommentaryForm(forms.ModelForm):
+    class Meta:
+        model = Commentary
+        fields = ["commentary_content"]
