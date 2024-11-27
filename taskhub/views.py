@@ -208,3 +208,23 @@ def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
         context={"team": team}
     )
 
+
+class AddNewMemberToTeam(generic.FormView):
+    form_class = AddMemberForm
+    template_name = "forms/add_new_member.html"
+
+    def form_valid(self, form):
+        member_id = form.cleaned_data["worker_id"]
+        new_member = get_object_or_404(Worker, id=member_id)
+        team = get_object_or_404(Team, pk=self.kwargs["pk"])
+        if new_member not in team.members.all():
+            team.members.add(new_member)
+            team.save()
+        referer = self.request.POST.get("referer", None)
+        if referer:
+            return HttpResponseRedirect(referer)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("taskhub:team-details", kwargs={"pk": self.kwargs["pk"]})
+
