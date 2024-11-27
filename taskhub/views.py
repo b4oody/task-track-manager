@@ -3,14 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 
 from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
-    CreateProjectForm, CreateTasksForm, CreateCommentaryForm,
+    CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm,
 )
 from taskhub.models import (
     Worker,
@@ -198,3 +198,13 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
         "tasks/task-details.html",
         context
     )
+
+
+def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
+    team = Team.objects.get(pk=pk)
+    return render(
+        request,
+        "teams/team-profile.html",
+        context={"team": team}
+    )
+
