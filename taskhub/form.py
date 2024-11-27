@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import get_object_or_404
+
 from taskhub.models import Worker, Position, Team, Project, Task, TaskType, Commentary
 
 
@@ -171,3 +173,22 @@ class CreateCommentaryForm(forms.ModelForm):
     class Meta:
         model = Commentary
         fields = ["commentary_content"]
+
+
+class AddMemberForm(forms.ModelForm):
+    worker_id = forms.IntegerField(
+        label="ID працівника",
+        required=True
+    )
+
+    class Meta:
+        model = Worker
+        fields = ["worker_id"]
+
+    def clean_worker_id(self):
+        worker_id = self.cleaned_data.get("worker_id")
+        if not worker_id:
+            raise forms.ValidationError("Worker ID cannot be empty. Please enter a valid ID.")
+        if not Worker.objects.filter(id=worker_id).exists():
+            raise forms.ValidationError(f"Worker with ID '{worker_id}' does not exist.")
+        return worker_id
