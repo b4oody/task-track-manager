@@ -1,0 +1,20 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <div>
+    <p>Are u sure you want to delete the member: 
+      <strong>ID:{{ member_to_delete.id }}{{ member_to_delete.username }}
+      </strong>
+    </p>
+
+    <form action="" method="post">
+      {% csrf_token %}
+      <a class="btn-link" href="{{ referer }}">Назад</a>
+      <button type="submit">Так, видалити</button>
+    </form>
+  </div>
+{% endblock %}

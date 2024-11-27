@@ -228,3 +228,23 @@ class AddNewMemberToTeam(generic.FormView):
     def get_success_url(self):
         return reverse_lazy("taskhub:team-details", kwargs={"pk": self.kwargs["pk"]})
 
+
+class DeleteMemberFromTeam(View):
+    template_name = "forms/confirm_delete_member.html"
+
+    def get(self, request, *args, **kwargs):
+        team = get_object_or_404(Team, pk=kwargs["team_pk"])
+        member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
+        return render(
+            request,
+            self.template_name,
+            {"team": team, "member_to_delete": member_to_delete})
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        team = get_object_or_404(Team, pk=kwargs["team_pk"])
+        member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
+        if member_to_delete in team.members.all():
+            team.members.remove(member_to_delete)
+            team.save()
+        return redirect("taskhub:team-details", pk=team.pk)
