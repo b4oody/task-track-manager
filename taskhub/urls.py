@@ -12,7 +12,11 @@ from taskhub.views import (
     CreateTypeView,
 
     task_details_page_view,
+    team_details_page_view,
 
+    # add_new_member_team_view,
+    AddNewMemberToTeam,
+    DeleteMemberFromTeam,
 )
 
 urlpatterns = [
@@ -25,6 +29,14 @@ urlpatterns = [
 
     path("profile/teams/", teams_page_view, name="teams"),
     path("profile/create-team/", create_team_form_view, name="create-team"),
+    path("profile/team/<int:pk>/", team_details_page_view, name="team-details"),
+    path("profile/team/<int:pk>/add-member/", AddNewMemberToTeam.as_view(), name="add-member"),
+    path(
+        "profile/team/<int:team_pk>/delete/<int:member_pk>/",
+        DeleteMemberFromTeam.as_view(),
+        name="delete-member"
+    ),
+
 
     path("profile/tasks/", tasks_page_view, name="tasks"),
     path("profile/create-task/", create_task_form_view, name="create-task"),
@@ -33,7 +45,6 @@ urlpatterns = [
 
 
     path("profile/task/<int:pk>/", task_details_page_view, name="task-detail"),
-
 
 
 ]
