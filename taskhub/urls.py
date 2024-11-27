@@ -14,9 +14,10 @@ from taskhub.views import (
     task_details_page_view,
     team_details_page_view,
 
-    # add_new_member_team_view,
     AddNewMemberToTeam,
     DeleteMemberFromTeam,
+    DeleteProjectView,
+
 )
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
 
     path("profile/projects/", projects_page_view, name="projects"),
     path("profile/create-project/", create_project_form_view, name="create-project"),
+    path("profile/project/delete/<int:pk>/", DeleteProjectView.as_view(), name="delete-project"),
 
     path("profile/teams/", teams_page_view, name="teams"),
     path("profile/create-team/", create_team_form_view, name="create-team"),
