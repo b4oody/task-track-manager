@@ -21,15 +21,19 @@
     </div>
     <section class="teams-list">
 
-      {% for team in worker_teams %}
+      {% for team in page_obj %}
         <div class="team-card">
           <h2><a href="{% url 'taskhub:team-details' team.pk %}">{{ team.name }}</a></h2>
           <p>{{ team.description }}</p>
         </div>
-        {% empty %}
+      {% empty %}
         <h3 class="no-tasks">Поки немає команди, відпочивайте!</h3>
       {% endfor %}
 
     </section>
+
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
   </main>
 {% endblock %}

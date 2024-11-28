@@ -100,8 +100,10 @@ def projects_page_view(request: HttpRequest) -> HttpResponse:
 
 def teams_page_view(request: HttpRequest) -> HttpResponse:
     worker = Worker.objects.get(pk=request.user.id)
+    page_obj = pagination(request, Team.objects.filter(members=worker), 8)
     context = {
-        "worker_teams": Team.objects.filter(members=worker)
+        "worker_teams": Team.objects.filter(members=worker),
+        "page_obj": page_obj,
     }
     return render(request, "teams/user-teams.html", context=context)
 
@@ -202,6 +204,7 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     team = Team.objects.get(pk=pk)
+
     return render(
         request,
         "teams/team-profile.html",
