@@ -204,11 +204,11 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     team = Team.objects.get(pk=pk)
-
+    page_obj = pagination(request, team.projects.all(), 4)
     return render(
         request,
         "teams/team-profile.html",
-        context={"team": team}
+        context={"page_obj": page_obj, "team": team},
     )
 
 

@@ -44,7 +44,7 @@
     <section class="team-projects">
       <h2>Поточні проекти</h2>
       <div class="project-list">
-        {% for project in team.projects.all %}
+        {% for project in page_obj %}
           <div class="project-item">
             <h3><a href="{% url 'taskhub:projects' %}">{{ project.name }}</a></h3>
             <p>{{ project.description }}</p>
@@ -58,5 +58,8 @@
         {% endfor %}
       </div>
     </section>
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
   </main>
 {% endblock %}
