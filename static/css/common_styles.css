@@ -575,3 +575,93 @@ form label {
         padding: 6px 10px; /* Зменшуємо відступи */
     }
 }
+
+
+
+/* Сітка для учасників */
+.team-members .member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Максимум 5 карток на рядок, з автоматичним розподілом */
+    gap: 20px; /* Відстань між картками */
+    margin-top: 20px;
+}
+
+/* Картки учасників */
+.member-card {
+    background-color: rgba(255, 235, 235, 0.95);
+    border: 2px solid #ffc4c4;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    word-wrap: break-word; /* Дозволяє переносити довгі слова */
+    overflow-wrap: break-word; /* Забезпечує правильний перехід для довгих слів */
+    hyphens: auto; /* Автоматичне додавання переносів для довгих слів */
+}
+
+.member-card h3 {
+    color: #b23b3b;
+    margin-bottom: 10px;
+}
+
+.member-card p {
+    color: #4a1c1c;
+    font-size: 14px;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: #b23b3b;
+}
+
+
+/* Сітка для проектів */
+.team-projects .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Задаємо мінімальний розмір для карток проектів */
+    gap: 20px; /* Відстань між картками */
+    margin-top: 20px;
+}
+
+/* Картки проектів */
+.project-item {
+     background-color: rgba(255, 240, 240, 0.95);
+    border: 2px solid #ffc4c4;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    word-wrap: break-word; /* Дозволяє переносити довгі слова */
+    overflow-wrap: break-word; /* Забезпечує правильний перехід для довгих слів */
+    hyphens: auto; /* Автоматичне додавання переносів для довгих слів */
+}
+
+.project-item h3 {
+    color: #b23b3b;
+    margin-bottom: 10px;
+}
+
+.project-item p {
+    color: #4a1c1c;
+    font-size: 14px;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: #b23b3b;
+}
+
+
+@media (max-width: 768px) {
+    .team-members .member-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2-3 картки на малих екранах */
+    }
+
+    .team-projects .project-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Картки проектів для менших екранів */
+    }
+}
