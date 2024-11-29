@@ -14,6 +14,7 @@
 
     <!-- Інформація про проект -->
     <section class="project-header">
+      <a href="{% url 'taskhub:project-update' project.pk %}" class="btn-link">Редагувати</a>
       <h1>Проєкт: {{ project.name }}</h1>
       <p>Опис проєкту: {{ project.description }}</p>
       <p>Дедлайн: {{ project.deadline }}</p>
@@ -34,8 +35,8 @@
         {% for task in project.tasks.all %}
           <div class="task-card">
             <a href="{% url 'taskhub:task-detail' task.pk %}" class="task-name">{{ task.name }}</a>
-            <a 
-                style="float: right" href="{% url 'taskhub:task-delete' task.pk%}" 
+            <a
+                style="float: right" href="{% url 'taskhub:task-delete' task.pk%}"
                 class="btn-link">Видалити завдання
             </a>
             <span class="task-meta">{{ task.created_at|date:"d M, Y, H:i" }}</span>

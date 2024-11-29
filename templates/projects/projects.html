@@ -41,7 +41,7 @@
           <h2><a href="{% url 'taskhub:project-details' project.pk %}">{{ project.name }}</a></h2>
           <p><strong>Дедлайн:</strong> {{ project.deadline }}</p>
           <p><strong>Статус:</strong> {{ project.status_display }}</p>
-          <button class="edit-btn">Редагувати</button>
+          <a href="{% url 'taskhub:project-update' project.pk %}" class="btn-link">Редагувати</a>
           <a href="{% url 'taskhub:delete-project' project.pk %}" class="btn-link">Видалити</a>
         </div>
       {% endfor %}
