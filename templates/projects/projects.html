@@ -26,12 +26,11 @@
           <option value="all">Всі</option>
           <option value="active">Активні</option>
           <option value="completed">Завершені</option>
-          <option value="archived">Архівовані</option>
         </select>
       </div>
       <!-- Управління проектами -->
       <div class="project-actions">
-        <button class="create-project-btn">Створити новий проект</button>
+        <a href="{% url 'taskhub:create-project' %}" class="btn-link">Створити новий проект</a>
       </div>
     </section>
 
@@ -39,11 +38,11 @@
     <section class="projects-list">
       {% for project in worker_projects %}
         <div class="project-card">
-          <h2><a href="#">{{ project.name }}</a></h2>
+          <h2><a href="{% url 'taskhub:project-details' project.pk %}">{{ project.name }}</a></h2>
           <p><strong>Дедлайн:</strong> {{ project.deadline }}</p>
           <p><strong>Статус:</strong> {{ project.status_display }}</p>
           <button class="edit-btn">Редагувати</button>
-          <button class="archive-btn">Архівувати</button>
+          <a href="{% url 'taskhub:delete-project' project.pk %}" class="btn-link">Видалити</a>
         </div>
       {% endfor %}
     </section>
