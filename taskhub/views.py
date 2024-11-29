@@ -257,3 +257,18 @@ class DeleteProjectView(generic.DeleteView):
     model = Project
     template_name = "forms/confirm_delete_project.html"
     success_url = reverse_lazy("taskhub:projects")
+
+
+def project_details_page_view(request, pk: int) -> HttpResponse:
+    project = Project.objects.get(pk=pk)
+    return render(
+        request,
+        "projects/project-details.html",
+        context={"project": project}
+    )
+
+
+class DeleteTaskView(generic.DeleteView):
+    model = Task
+    template_name = "forms/confirm_delete_task.html"
+    success_url = reverse_lazy("taskhub:tasks")

@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main">
+    <!-- Кнопка "Назад" -->
+    <div class="back-button-container">
+      <a href="{% url 'taskhub:projects' %}" class="back-button">Назад до списку проектів</a>
+    </div>
+
+
+    <!-- Інформація про проект -->
+    <section class="project-header">
+      <h1>Проєкт: {{ project.name }}</h1>
+      <p>Опис проєкту: {{ project.description }}</p>
+      <p>Дедлайн: {{ project.deadline }}</p>
+      <p>Статус: {{ project.status_display }}</p>
+      <p>Команда: {{ project.team }}</p>
+      <!-- Кнопки для менеджерів -->
+      <div class="manager-actions">
+        <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити завдання</a>
+        <a href="{% url 'taskhub:create-project' %}" class="btn-link">Створити проєкт</a>
+        <a href="{% url 'taskhub:delete-project' project.pk%}" class="btn-link">Видалити проєкт</a>
+      </div>
+    </section>
+
+     <!-- Огляд завдань -->
+    <section id="tasks-overview">
+      <h2>Завдання та процеси проєкта</h2>
+      <div class="task-container">
+        {% for task in project.tasks.all %}
+          <div class="task-card">
+            <a href="{% url 'taskhub:task-detail' task.pk %}" class="task-name">{{ task.name }}</a>
+            <a 
+                style="float: right" href="{% url 'taskhub:task-delete' task.pk%}" 
+                class="btn-link">Видалити завдання
+            </a>
+            <span class="task-meta">{{ task.created_at|date:"d M, Y, H:i" }}</span>
+            <p><strong>Deadline:</strong> {{ task.deadline|date:"d M, Y" }}</p>
+            <p class="task-description">{{ task.description }}</p>
+          </div>
+        {% empty %}
+          <h3 class="no-tasks">Поки немає завдань, відпочивайте!</h3>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+{% endblock %}
