@@ -192,3 +192,15 @@ class AddMemberForm(forms.ModelForm):
         if not Worker.objects.filter(id=worker_id).exists():
             raise forms.ValidationError(f"Worker with ID '{worker_id}' does not exist.")
         return worker_id
+
+
+class UpdateTeamForm(forms.ModelForm):
+    member_ids = forms.CharField(
+        label="Member IDs",
+        help_text="Enter user IDs separated by commas",
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+    )
+
+    class Meta:
+        model = Team
+        fields = ["name", "description", "member_ids"]

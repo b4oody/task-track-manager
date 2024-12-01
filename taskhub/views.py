@@ -10,7 +10,7 @@ from django.views import generic, View
 from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
-    CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm,
+    CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm,
 )
 from taskhub.models import (
     Worker,
@@ -289,3 +289,18 @@ class DeleteTeamView(generic.DeleteView):
     success_url = reverse_lazy("taskhub:teams")
 
 
+class UpdateTeamView(generic.UpdateView):
+    model = Team
+    form_class = UpdateTeamForm
+    template_name = "teams/project-update.html.html"
+
+    def form_valid(self, form):
+        ids = [int(id.strip()) for id in form.cleaned_data["member_ids"].split(",")]
+        workers = Worker.objects.filter(id__in=ids)
+        team = self.object
+        team.members.set(workers)
+        team.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("taskhub:team-details", kwargs={"pk": self.object.pk})

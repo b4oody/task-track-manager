@@ -15,6 +15,7 @@ from taskhub.views import (
     team_details_page_view,
     project_details_page_view,
     UpdateProjectView,
+    UpdateTeamView,
 
     AddNewMemberToTeam,
     DeleteMemberFromTeam,
@@ -47,6 +48,7 @@ urlpatterns = [
         name="delete-member"
     ),
     path("profile/team/delete/<int:pk>/", DeleteTeamView.as_view(), name="team-delete"),
+    path("profile/team/update/<int:pk>/", UpdateTeamView.as_view(), name="team-update"),
 
 
 
