@@ -274,7 +274,7 @@ class DeleteTaskView(generic.DeleteView):
     success_url = reverse_lazy("taskhub:tasks")
 
 
-class DetailProjectView(generic.UpdateView):
+class UpdateProjectView(generic.UpdateView):
     model = Project
     template_name = "projects/project-update.html"
     fields = "__all__"
@@ -287,3 +287,5 @@ class DeleteTeamView(generic.DeleteView):
     model = Team
     template_name = "forms/confirm_delete_team.html"
     success_url = reverse_lazy("taskhub:teams")
+
+
