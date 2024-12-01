@@ -281,3 +281,9 @@ class DetailProjectView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("taskhub:project-details", kwargs={"pk": self.object.pk})
+
+
+class DeleteTeamView(generic.DeleteView):
+    model = Team
+    template_name = "forms/confirm_delete_team.html"
+    success_url = reverse_lazy("taskhub:teams")

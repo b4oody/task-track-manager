@@ -20,6 +20,7 @@ from taskhub.views import (
     DeleteMemberFromTeam,
     DeleteProjectView,
     DeleteTaskView,
+    DeleteTeamView,
 
 )
 
@@ -45,13 +46,15 @@ urlpatterns = [
         DeleteMemberFromTeam.as_view(),
         name="delete-member"
     ),
+    path("profile/team/delete/<int:pk>/", DeleteTeamView.as_view(), name="team-delete"),
+
 
 
     path("profile/tasks/", tasks_page_view, name="tasks"),
     path("profile/create-task/", create_task_form_view, name="create-task"),
     path("profile/create-type/", CreateTypeView.as_view(), name="create-type"),
     path("profile/task/<int:pk>/", task_details_page_view, name="task-detail"),
-    path("profile/delete/<int:pk>/", DeleteTaskView.as_view(), name="task-delete"),
+    path("profile/task/delete/<int:pk>/", DeleteTaskView.as_view(), name="task-delete"),
 
 
 ]
