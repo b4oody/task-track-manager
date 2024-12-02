@@ -295,8 +295,7 @@ class UpdateTeamView(generic.UpdateView):
     template_name = "teams/project-update.html.html"
 
     def form_valid(self, form):
-        ids = [int(id.strip()) for id in form.cleaned_data["member_ids"].split(",")]
-        workers = Worker.objects.filter(id__in=ids)
+        workers = form.cleaned_data["member_ids"]
         team = self.object
         team.members.set(workers)
         team.save()
