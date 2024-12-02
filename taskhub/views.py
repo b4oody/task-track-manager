@@ -292,7 +292,7 @@ class DeleteTeamView(generic.DeleteView):
 class UpdateTeamView(generic.UpdateView):
     model = Team
     form_class = UpdateTeamForm
-    template_name = "teams/project-update.html.html"
+    template_name = "teams/project-update.html"
 
     def form_valid(self, form):
         workers = form.cleaned_data["member_ids"]
