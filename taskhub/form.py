@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import get_object_or_404
 
+from taskhub.mixins import clean_ids_field, clean_project_name
 from taskhub.models import Worker, Position, Team, Project, Task, TaskType, Commentary
 
 
@@ -217,4 +218,46 @@ class UpdateTeamForm(forms.ModelForm):
         workers = Worker.objects.filter(pk__in=ids)
         if len(workers) != len(ids):
             raise forms.ValidationError("One or more user IDs are invalid. Please check the IDs.")
-        return workes
+        return workers
+
+
+class UpdateTaskForm(forms.ModelForm):
+    assignees_ids = forms.CharField(
+        label="Assignees IDs",
+        help_text="Enter user IDs separated by commas",
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+    )
+
+    project_name = forms.CharField(
+        label="Project name",
+        widget=forms.TextInput(attrs={"placeholder": "Text project name"})
+    )
+
+    class Meta:
+        model = Task
+        fields = [
+            "name",
+            "description",
+            "deadline",
+            "is_completed",
+            "priority",
+            "task_type",
+            "assignees_ids",
+            "project_name"
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+            assignees = self.instance.assignees.all()
+            self.fields["assignees_ids"].initial = ', '.join(str(worker.id) for worker in assignees)
+
+            project = self.instance.project
+            self.fields["project_name"].initial = project.name if project else ""
+
+    def clean_assignees_ids(self):
+        return clean_ids_field(self, "assignees_ids", Worker)
+
+    def clean_project_name(self):
+        return clean_project_name(self, "project_name", Project)
