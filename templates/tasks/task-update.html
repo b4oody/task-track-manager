@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Редагування завдання</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main-index">
+    <div class="content" style="width: 100%; max-width: 500px;">
+      <h1>Редагування завдання</h1>
+      <form class="form" action="{% url 'taskhub:task-update' task.pk %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Змінити</button>
+      </form>
+
+    </div>
+  </main>
+{% endblock %}
