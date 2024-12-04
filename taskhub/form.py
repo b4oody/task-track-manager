@@ -206,19 +206,15 @@ class UpdateTeamForm(forms.ModelForm):
         model = Team
         fields = ["name", "description", "member_ids"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+            members = self.instance.members.all()
+            self.fields["member_ids"].initial = ', '.join(str(worker.id) for worker in members)
+
     def clean_member_ids(self):
-        data_ids = self.cleaned_data.get("member_ids")
-        ids = [id.strip() for id in data_ids.split(",") if id.strip()]
-        if not ids:
-            raise forms.ValidationError("Member IDs cannot be empty. Please enter valid IDs.")
-        try:
-            ids = [int(id) for id in ids]
-        except ValueError:
-            raise forms.ValidationError("All IDs must be valid integers.")
-        workers = Worker.objects.filter(pk__in=ids)
-        if len(workers) != len(ids):
-            raise forms.ValidationError("One or more user IDs are invalid. Please check the IDs.")
-        return workers
+        return clean_ids_field(self, "member_ids", Worker)
 
 
 class UpdateTaskForm(forms.ModelForm):
