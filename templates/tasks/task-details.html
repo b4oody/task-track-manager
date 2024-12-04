@@ -16,6 +16,7 @@
 
     <!-- Інформація про завдання -->
     <section class="task-details">
+      <a href="{% url 'taskhub:task-update' task.pk %}" class="btn-link">Редагувати завдання</a>
       <h1>{{ task.name }}</h1>
       <p>{{ task.created_at }}</p>
       <br>
@@ -32,7 +33,8 @@
       <br>
       <p class="task-description"><strong>Опис:</strong> {{ task.description }}</p>
 
-      <a href="{% url 'taskhub:task-update' task.pk %}" class="btn-link">Редагувати завдання</a>
+      <a href="{% url 'taskhub:task-delete' task.pk %}" class="btn-link">Видалити завдання</a>
+      <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити нове завдання</a>
     </section>
 
     <!-- Коментарі -->

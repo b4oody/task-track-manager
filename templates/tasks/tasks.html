@@ -47,6 +47,9 @@
 
     <!-- Список завдань -->
     <section class="tasks-list">
+    <div class="manager-actions">
+      <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити завдання</a>
+    </div>
       {% for task in worker_tasks%}
       <div class="task-card">
         <h2><a href="{% url 'taskhub:task-details' task.pk %}">{{ task.name }}</a></h2>
