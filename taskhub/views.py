@@ -11,6 +11,7 @@ from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
     CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm, UpdateTaskForm,
+    UpdateProjectForm,
 )
 from taskhub.models import (
     Worker,
@@ -276,8 +277,15 @@ class DeleteTaskView(generic.DeleteView):
 
 class UpdateProjectView(generic.UpdateView):
     model = Project
+    form_class = UpdateProjectForm
     template_name = "projects/project-update.html"
-    fields = "__all__"
+
+    def form_valid(self, form):
+        team_update = form.cleaned_data["teams_choice"]
+        project = self.object
+        project.team = team_update
+        project.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("taskhub:project-details", kwargs={"pk": self.object.pk})

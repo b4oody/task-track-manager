@@ -227,3 +227,19 @@ class UpdateTaskForm(forms.ModelForm):
 
     def clean_project_name(self):
         return clean_project_name(self, "project_name", Project)
+
+
+class UpdateProjectForm(forms.ModelForm):
+    teams_choice = forms.ModelChoiceField(queryset=Team.objects.none(), label="Team")
+
+    class Meta:
+        model = Project
+        fields = ["name", "description", "deadline", "is_completed", "teams_choice"]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.get("user")
+        super().__init__(*args, **kwargs)
+        self.fields['teams_choice'].queryset = Team.objects.filter(members=user)
+
+        if self.instance and self.instance.pk:
+            self.fields["teams_choice"].initial = self.instance.team.id
