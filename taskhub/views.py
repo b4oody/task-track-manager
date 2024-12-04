@@ -10,7 +10,7 @@ from django.views import generic, View
 from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
-    CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm,
+    CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm, UpdateTaskForm,
 )
 from taskhub.models import (
     Worker,
@@ -188,7 +188,7 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
             new_comment.worker = request.user
             new_comment.task = task
             new_comment.save()
-            return redirect("taskhub:task-detail", pk=task.pk)
+            return redirect("taskhub:task-details", pk=task.pk)
     else:
         comment_form = CreateCommentaryForm()
     context = {
@@ -299,7 +299,26 @@ class UpdateTeamView(generic.UpdateView):
         team = self.object
         team.members.set(workers)
         team.save()
+
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("taskhub:team-details", kwargs={"pk": self.object.pk})
+
+
+class UpdateTaskView(generic.UpdateView):
+    model = Task
+    form_class = UpdateTaskForm
+    template_name = "tasks/task-update.html"
+
+    def form_valid(self, form):
+        workers = form.cleaned_data["assignees_ids"]
+        project = form.cleaned_data["project_name"]
+        task = self.object
+        task.assignees.set(workers)
+        task.project = project
+        task.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("taskhub:task-details", kwargs={"pk": self.object.pk})
