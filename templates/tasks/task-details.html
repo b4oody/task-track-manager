@@ -47,6 +47,10 @@
           {% for commentary in task.commentaries.all %}
             <div class="comment">
               <p><strong>{{ commentary.worker.username }}</strong></p>
+              <form style="float: right" action="{% url 'taskhub:commentary-delete' commentary.pk %}" method="post">
+                {% csrf_token %}
+                <button value="submit">Delete</button>
+              </form>
               <p class="task-description">{{ commentary.commentary_content }}</p>
               <span class="comment-meta">{{ commentary.created_at|date:"d.m.Y H:i" }}</span>
             </div>

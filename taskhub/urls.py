@@ -23,6 +23,7 @@ from taskhub.views import (
     DeleteTaskView,
     DeleteTeamView,
     UpdateTaskView,
+    DeleteCommentaryView,
 
 )
 
@@ -59,6 +60,8 @@ urlpatterns = [
     path("profile/task/<int:pk>/", task_details_page_view, name="task-details"),
     path("profile/task/delete/<int:pk>/", DeleteTaskView.as_view(), name="task-delete"),
     path("profile/task/update/<int:pk>/", UpdateTaskView.as_view(), name="task-update"),
+
+    path("profile/commentary/<int:pk>/", DeleteCommentaryView.as_view(), name="commentary-delete"),
 
 
 ]

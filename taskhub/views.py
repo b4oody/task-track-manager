@@ -18,7 +18,7 @@ from taskhub.models import (
     Project,
     Position,
     Team,
-    Task, TaskType
+    Task, TaskType, Commentary
 )
 
 
@@ -330,3 +330,11 @@ class UpdateTaskView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("taskhub:task-details", kwargs={"pk": self.object.pk})
+
+
+class DeleteCommentaryView(generic.DeleteView):
+    model = Commentary
+
+    def get_success_url(self):
+        task_id = self.object.task.pk
+        return reverse_lazy("taskhub:task-details", kwargs={"pk": task_id})
