@@ -1,9 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import get_object_or_404
 
 from taskhub.mixins import clean_ids_field, clean_project_name
-from taskhub.models import Worker, Position, Team, Project, Task, TaskType, Commentary
+from taskhub.models import Worker, Position, Team, Project, Task, Commentary
 
 
 class RegistrationForm(UserCreationForm):
@@ -52,18 +51,7 @@ class CreateTeamForm(forms.ModelForm):
         fields = ["name", "description", "member_ids"]
 
     def clean_member_ids(self):
-        data = self.cleaned_data["member_ids"]
-        ids = [id.strip() for id in data.split(",") if id.strip()]
-        if not ids:
-            raise forms.ValidationError("Member IDs cannot be empty. Please enter valid IDs.")
-
-        try:
-            workers = Worker.objects.filter(pk__in=ids)
-            if len(workers) != len(ids):
-                raise forms.ValidationError("One or more user IDs are invalid. Please check the IDs.")
-            return workers
-        except ValueError:
-            raise forms.ValidationError("Enter valid integers separated by commas.")
+        return clean_ids_field(self, "member_ids", Worker)
 
     def save(self, commit=True):
         team = super().save(commit=False)
