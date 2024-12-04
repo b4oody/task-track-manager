@@ -74,7 +74,7 @@
       <div class="task-container">
         {% for task in page_obj %}
           <div class="task-card">
-            <a href="{% url 'taskhub:task-detail' task.pk %}" class="task-name">{{ task.name }}</a>
+            <a href="{% url 'taskhub:task-details' task.pk %}" class="task-name">{{ task.name }}</a>
             <span class="task-meta">{{ task.created_at|date:"d M, Y, H:i" }}</span>
             <p><strong>Deadline:</strong> {{ task.deadline|date:"d M, Y" }}</p>
             <p class="task-description">{{ task.description }}</p>
