@@ -121,28 +121,10 @@ class CreateTasksForm(forms.ModelForm):
         ]
 
     def clean_assignees_ids(self):
-        data_ids = self.cleaned_data.get("assignees_ids")
-        ids = [id.strip() for id in data_ids.split(",") if id.strip()]
-        if not ids:
-            raise forms.ValidationError("Member IDs cannot be empty. Please enter valid IDs.")
-
-        try:
-            workers = Worker.objects.filter(pk__in=ids)
-            if len(workers) != len(ids):
-                raise forms.ValidationError("One or more user IDs are invalid. Please check the IDs.")
-            return workers
-        except ValueError:
-            raise forms.ValidationError("Enter valid integers separated by commas.")
+        return clean_ids_field(self, "assignees_ids", Worker)
 
     def clean_project_name(self):
-        project_name = self.cleaned_data.get("project_name")
-        if not project_name:
-            raise forms.ValidationError("Project name cannot be empty. Please enter a valid name.")
-        try:
-            project = Project.objects.get(name=project_name)
-            return project
-        except Project.DoesNotExist:
-            raise forms.ValidationError(f"Project with name '{project_name}' does not exist.")
+        return clean_project_name(self, "project_name", Project)
 
     def save(self, commit=True):
         task = super().save(commit=False)
