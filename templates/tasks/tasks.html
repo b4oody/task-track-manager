@@ -47,18 +47,21 @@
 
     <!-- Список завдань -->
     <section class="tasks-list">
-    <div class="manager-actions">
-      <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити завдання</a>
-    </div>
-      {% for task in worker_tasks%}
-      <div class="task-card">
-        <h2><a href="{% url 'taskhub:task-details' task.pk %}">{{ task.name }}</a></h2>
-        <p><strong>Статус:</strong>{{ task.status_display }}</p>
-        <p><strong>Пріоритет:</strong>{{ task.priority }}</p>
-        <p><strong>Команда:</strong>{{ task.project.team.name }}</p>
+      <div class="manager-actions">
+        <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити завдання</a>
       </div>
+      {% for task in page_obj %}
+        <div class="task-card">
+          <h2><a href="{% url 'taskhub:task-details' task.pk %}">{{ task.name }}</a></h2>
+          <p><strong>Статус:</strong>{{ task.status_display }}</p>
+          <p><strong>Пріоритет:</strong>{{ task.priority }}</p>
+          <p><strong>Команда:</strong>{{ task.project.team.name }}</p>
+        </div>
       {% endfor %}
 
     </section>
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
   </main>
 {% endblock %}

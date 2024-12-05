@@ -113,8 +113,11 @@ def teams_page_view(request: HttpRequest) -> HttpResponse:
 
 def tasks_page_view(request: HttpRequest) -> HttpResponse:
     worker = Worker.objects.get(pk=request.user.id)
+    worker_tasks = Task.objects.filter(project__team__members=worker)
+    page_obj = pagination(request, worker_tasks, items_per_page=6)
     context = {
-        "worker_tasks": Task.objects.filter(project__team__members=worker)
+        "worker_tasks": worker_tasks,
+        "page_obj": page_obj
     }
     return render(request, "tasks/tasks.html", context=context)
 
