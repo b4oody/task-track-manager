@@ -36,7 +36,7 @@
 
     <!-- Список проектів -->
     <section class="projects-list">
-      {% for project in worker_projects %}
+      {% for project in page_obj %}
         <div class="project-card">
           <h2><a href="{% url 'taskhub:project-details' project.pk %}">{{ project.name }}</a></h2>
           <p><strong>Дедлайн:</strong> {{ project.deadline }}</p>
@@ -46,5 +46,8 @@
         </div>
       {% endfor %}
     </section>
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
   </main>
 {% endblock %}

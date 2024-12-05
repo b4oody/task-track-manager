@@ -93,8 +93,10 @@ def projects_page_view(request: HttpRequest) -> HttpResponse:
     worker_projects = Project.objects.filter(
         team__in=worker.teams.all()
     ).select_related("team").prefetch_related("team__members")
+    page_obj = pagination(request, worker_projects, items_per_page=8)
     context = {
         "worker_projects": worker_projects,
+        "page_obj": page_obj,
     }
     return render(request, "projects/projects.html", context=context)
 
@@ -112,7 +114,7 @@ def teams_page_view(request: HttpRequest) -> HttpResponse:
 def tasks_page_view(request: HttpRequest) -> HttpResponse:
     worker = Worker.objects.get(pk=request.user.id)
     context = {
-        "worker_tasks": Task.objects.filter(assignees=worker)
+        "worker_tasks": Task.objects.filter(project__team__members=worker)
     }
     return render(request, "tasks/tasks.html", context=context)
 
@@ -262,10 +264,11 @@ class DeleteProjectView(generic.DeleteView):
 
 def project_details_page_view(request, pk: int) -> HttpResponse:
     project = Project.objects.get(pk=pk)
+    page_obj = pagination(request, project.tasks.all(), 8)
     return render(
         request,
         "projects/project-details.html",
-        context={"project": project}
+        context={"project": project, "page_obj": page_obj}
     )
 
 
