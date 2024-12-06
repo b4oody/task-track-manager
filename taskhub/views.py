@@ -11,7 +11,7 @@ from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
     CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm, UpdateTaskForm,
-    UpdateProjectForm,
+    UpdateProjectForm, StatusFilterForm,
 )
 from taskhub.models import (
     Worker,
@@ -90,9 +90,18 @@ def get_profile(request: HttpRequest) -> HttpResponse:
 
 def projects_page_view(request: HttpRequest) -> HttpResponse:
     worker = Worker.objects.get(pk=request.user.id)
+
     worker_projects = Project.objects.filter(
         team__in=worker.teams.all()
     ).select_related("team").prefetch_related("team__members")
+    form = StatusFilterForm(request.GET)
+    if form.is_valid():
+        status = form.cleaned_data.get("status")
+        if status and status != "all":
+            if status == "completed":
+                worker_projects = worker_projects.filter(is_completed=True)
+            elif status == "active":
+                worker_projects = worker_projects.filter(is_completed=False)
     page_obj = pagination(request, worker_projects, items_per_page=8)
     context = {
         "worker_projects": worker_projects,

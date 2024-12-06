@@ -20,14 +20,16 @@
     <section class="project-controls">
       <h1>Проекти</h1>
       <!-- Фільтрація за статусом -->
-      <div class="filter-section">
+      <form method="get" action="{% url 'taskhub:projects' %}">
+        <div class="filter-section">
         <label for="status-filter">Фільтр за статусом:</label>
-        <select id="status-filter">
-          <option value="all">Всі</option>
-          <option value="active">Активні</option>
-          <option value="completed">Завершені</option>
+        <select name="status" id="status-filter" onchange="this.form.submit()">
+          <option value="all" {% if request.GET.status == 'all' %}selected{% endif %}>Всі</option>
+          <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Активні</option>
+          <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Завершені</option>
         </select>
       </div>
+      </form>
       <!-- Управління проектами -->
       <div class="project-actions">
         <a href="{% url 'taskhub:create-project' %}" class="btn-link">Створити новий проект</a>

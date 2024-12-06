@@ -241,5 +241,11 @@ class UpdateProjectForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["teams_choice"].queryset = Team.objects.filter(members=self.user)
 
-        if self.instance and self.instance.pk:
-            self.fields["teams_choice"].initial = self.instance.team.id
+
+class StatusFilterForm(forms.Form):
+    STATUS_CHOICES = [
+        ("all", "All"),
+        ("active", "In progress"),
+        ("completed", "Completed"),
+    ]
+    status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
