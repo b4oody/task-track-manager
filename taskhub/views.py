@@ -286,6 +286,11 @@ class UpdateProjectView(generic.UpdateView):
     form_class = UpdateProjectForm
     template_name = "projects/project-update.html"
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         team_update = form.cleaned_data["teams_choice"]
         project = self.object
