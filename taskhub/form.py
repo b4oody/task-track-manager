@@ -2,7 +2,13 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from taskhub.mixins import clean_ids_field, clean_project_name
-from taskhub.models import Worker, Position, Team, Project, Task, Commentary
+from taskhub.models import Worker, Position, Team, Project, Task, Commentary, PRIORITY_CHOICES
+
+STATUS_CHOICES = [
+    ("all", "All"),
+    ("active", "In progress"),
+    ("completed", "Completed"),
+]
 
 
 class RegistrationForm(UserCreationForm):
@@ -243,9 +249,14 @@ class UpdateProjectForm(forms.ModelForm):
 
 
 class StatusFilterForm(forms.Form):
-    STATUS_CHOICES = [
-        ("all", "All"),
-        ("active", "In progress"),
-        ("completed", "Completed"),
-    ]
+    STATUS_CHOICES = STATUS_CHOICES
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
+
+
+class TaskFilterForm(forms.Form):
+    STATUS_CHOICES = STATUS_CHOICES
+    PRIORITY_CHOICES = PRIORITY_CHOICES
+
+    status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
+    priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
+    team = forms.ModelChoiceField(queryset=Team.objects.none(), required=False)

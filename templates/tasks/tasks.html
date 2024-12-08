@@ -19,30 +19,23 @@
     <section class="tasks-controls">
       <h1>Завдання</h1>
       <!-- Фільтри -->
-      <div class="filters">
-        <label for="status-filter">Фільтр за статусом:</label>
-        <select id="status-filter">
-          <option value="all">Всі</option>
-          <option value="active">Активні</option>
-          <option value="completed">Виконані</option>
-          <option value="overdue">Прострочені</option>
+      <form action="{% url 'taskhub:tasks' %}" method="get">
+        <select name="status" onchange="this.form.submit()">
+          <option value="all" {% if request.GET.status == 'all' %}selected{% endif %}>Всі статуси</option>
+          {% for status_value, status_label in form.fields.status.choices %}
+            <option value="{{ status_value }}"
+                    {% if request.GET.status == status_value %}selected{% endif %}>{{ status_label }}</option>
+          {% endfor %}
         </select>
 
-        <label for="priority-filter">Фільтр за пріоритетом:</label>
-        <select id="priority-filter">
-          <option value="all">Всі</option>
-          <option value="high">Високий</option>
-          <option value="medium">Середній</option>
-          <option value="low">Низький</option>
+        <select name="priority" onchange="this.form.submit()">
+          <option value="all" {% if request.GET.priority == 'all' %}selected{% endif %}>Всі пріоритети</option>
+          {% for priority_value, priority_label in form.fields.priority.choices %}
+            <option value="{{ priority_value }}"
+                    {% if request.GET.priority == priority_value %}selected{% endif %}>{{ priority_label }}</option>
+          {% endfor %}
         </select>
-
-        <label for="team-filter">Фільтр за командою:</label>
-        <select id="team-filter">
-          <option value="all">Всі</option>
-          <option value="dev">Розробники</option>
-          <option value="qa">QA Інженери</option>
-        </select>
-      </div>
+      </form>
     </section>
 
     <!-- Список завдань -->
