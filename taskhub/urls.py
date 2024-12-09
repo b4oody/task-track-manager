@@ -1,4 +1,11 @@
-from django.urls import path
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
+from django.urls import path, reverse_lazy
+
 from taskhub.views import (
     get_index_page,
     get_profile,
@@ -30,15 +37,29 @@ from taskhub.views import (
 urlpatterns = [
     path("", get_index_page, name="index"),
     path("profile/", get_profile, name="profile"),
-    path("register/", sign_up, name="register"),
 
+    path("register/", sign_up, name="register"),
+    path('password-reset/', PasswordResetView.as_view(
+        template_name="reset_password/password_reset_form.html",
+        email_template_name="reset_password/password_reset_email.html",
+        success_url=reverse_lazy("taskhub:password_reset_done")
+
+    ), name="reset_password"),
+    path("password-reset/done/", PasswordResetDoneView.as_view(
+        template_name="reset_password/password_reset_done.html"), name="password_reset_done"),
+
+    path("reset/<uidb64>/<token>/", PasswordResetConfirmView.as_view(
+        template_name="reset_password/password_reset_confirm.html",
+        success_url=reverse_lazy("taskhub:password_reset_complete")
+    ), name="password_reset_confirm"),
+    path("reset-password/complete/", PasswordResetCompleteView.as_view(
+        template_name="reset_password/password_reset_complete.html"), name="password_reset_complete"),
 
     path("profile/projects/", projects_page_view, name="projects"),
     path("profile/create-project/", create_project_form_view, name="create-project"),
     path("profile/project/delete/<int:pk>/", DeleteProjectView.as_view(), name="delete-project"),
     path("profile/project/<int:pk>/", project_details_page_view, name="project-details"),
     path("profile/project/update/<int:pk>/", UpdateProjectView.as_view(), name="project-update"),
-
 
     path("profile/teams/", teams_page_view, name="teams"),
     path("profile/create-team/", create_team_form_view, name="create-team"),
@@ -52,8 +73,6 @@ urlpatterns = [
     path("profile/team/delete/<int:pk>/", DeleteTeamView.as_view(), name="team-delete"),
     path("profile/team/update/<int:pk>/", UpdateTeamView.as_view(), name="team-update"),
 
-
-
     path("profile/tasks/", tasks_page_view, name="tasks"),
     path("profile/create-task/", create_task_form_view, name="create-task"),
     path("profile/create-type/", CreateTypeView.as_view(), name="create-type"),
@@ -62,7 +81,6 @@ urlpatterns = [
     path("profile/task/update/<int:pk>/", UpdateTaskView.as_view(), name="task-update"),
 
     path("profile/commentary/<int:pk>/", DeleteCommentaryView.as_view(), name="commentary-delete"),
-
 
 ]
 
