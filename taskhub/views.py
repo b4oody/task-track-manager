@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
@@ -11,7 +12,7 @@ from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
     CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm, UpdateTaskForm,
-    UpdateProjectForm, StatusFilterForm, TaskFilterForm,
+    UpdateProjectForm, StatusFilterForm, TaskFilterForm, WorkerChangePasswordForm,
 )
 from taskhub.models import (
     Worker,
@@ -378,3 +379,9 @@ class DeleteCommentaryView(generic.DeleteView):
     def get_success_url(self):
         task_id = self.object.task.pk
         return reverse_lazy("taskhub:task-details", kwargs={"pk": task_id})
+
+
+class WorkerPasswordChange(PasswordChangeView):
+    form_class = WorkerChangePasswordForm
+    success_url = reverse_lazy("taskhub:password_change_done")
+    template_name = "registration/password_change_form.html"

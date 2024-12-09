@@ -13,6 +13,7 @@
   <main>
     <!-- Кнопка "Logout" -->
     <div style="float: right" class="back-button-container">
+      <a href="{% url 'taskhub:password_change' %}" class="btn-link">Змінити пароль</a>
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button class="create-project-btn" type="submit">Logout</button>

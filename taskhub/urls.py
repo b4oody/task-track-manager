@@ -2,7 +2,9 @@ from django.contrib.auth.views import (
     PasswordResetView,
     PasswordResetDoneView,
     PasswordResetConfirmView,
-    PasswordResetCompleteView
+    PasswordResetCompleteView,
+    PasswordChangeView, PasswordChangeDoneView,
+
 )
 from django.urls import path, reverse_lazy
 
@@ -31,6 +33,7 @@ from taskhub.views import (
     DeleteTeamView,
     UpdateTaskView,
     DeleteCommentaryView,
+    WorkerPasswordChange,
 
 )
 
@@ -39,6 +42,12 @@ urlpatterns = [
     path("profile/", get_profile, name="profile"),
 
     path("register/", sign_up, name="register"),
+
+    path("password-change/", WorkerPasswordChange.as_view(), name="password_change"),
+    path("password-change/done/", PasswordChangeDoneView.as_view(
+        template_name="registration/password_change_done.html"
+    ), name="password_change_done"),
+
     path('password-reset/', PasswordResetView.as_view(
         template_name="reset_password/password_reset_form.html",
         email_template_name="reset_password/password_reset_email.html",

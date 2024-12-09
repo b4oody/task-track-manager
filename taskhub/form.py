@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 
 from taskhub.mixins import clean_ids_field, clean_project_name
 from taskhub.models import Worker, Position, Team, Project, Task, Commentary, PRIORITY_CHOICES
@@ -260,3 +260,27 @@ class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
     priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
     team = forms.ModelChoiceField(queryset=Team.objects.none(), required=False)
+
+
+class WorkerChangePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Старий пароль",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "current-password", "autofocus": True}
+        ),
+    )
+    new_password1 = forms.CharField(
+        label="Новий пароль",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "current-password", "autofocus": True}
+        ),
+    )
+    new_password2 = forms.CharField(
+        label="Підтвердження пароля",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "current-password", "autofocus": True}
+        ),
+    )
