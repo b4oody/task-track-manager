@@ -17,7 +17,8 @@
 
         <button type="submit">Увійти</button>
       </form>
-      <p>Немає акаунту? <a href="/register">Зареєструватися</a></p>
+      <p>Забули пароль? <a href="{% url 'taskhub:reset_password' %}">Скинути пароль</a></p>
+      <p>Немає акаунту? <a href="{% url 'taskhub:register' %}">Зареєструватися</a></p>
     </div>
   </main>
 {% endblock %}
