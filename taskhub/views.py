@@ -65,25 +65,38 @@ def pagination(request: HttpRequest, queryset, items_per_page=5):
 
 @login_required
 def get_profile(request: HttpRequest) -> HttpResponse:
-    worker = Worker.objects.prefetch_related("teams", "tasks").get(pk=request.user.id)
+    worker = (Worker.objects
+              .select_related("position")
+              .prefetch_related("teams", "tasks")
+              .only("id",
+                    "position__id",
+                    "position__name",
+                    "position_id",
+                    "username",
+                    "email",
+                    "first_name",
+                    "last_name"
+                    )
+              .get(pk=request.user.id))
+
     tasks = worker.tasks.aggregate(
         active_tasks=Count("id", filter=Q(is_completed=False)),
         finished_tasks=Count("id", filter=Q(is_completed=True)),
     )
-    finished_projects_count = Project.objects.filter(
-        Q(team__in=worker.teams.all()), Q(is_completed=True)
-    ).count()
-    active_projects_count = Project.objects.filter(
-        Q(team__in=worker.teams.all()), Q(is_completed=False)
-    ).count()
-    page_obj = pagination(request, worker.tasks.all(), items_per_page=5)
+
+    projects = Project.objects.filter(team__members=worker).aggregate(
+        active_projects=Count("id", filter=Q(is_completed=False)),
+        finished_projects=Count("id", filter=Q(is_completed=True)),
+    )
+    tasks_for_page = worker.tasks.filter(is_completed=False)
+    page_obj = pagination(request, tasks_for_page, items_per_page=5)
     context = {
         "worker": worker,
         "active_tasks": tasks["active_tasks"],
-        "finished_projects": finished_projects_count,
-        "active_projects": active_projects_count,
         "finished_tasks": tasks["finished_tasks"],
-        "page_obj": page_obj
+        "active_projects": projects["active_projects"],
+        "finished_projects": projects["finished_projects"],
+        "page_obj": page_obj,
     }
 
     return render(request, "profile/profile.html", context=context)
