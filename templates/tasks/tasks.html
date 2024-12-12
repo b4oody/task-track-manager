@@ -21,7 +21,6 @@
       <!-- Фільтри -->
       <form action="{% url 'taskhub:tasks' %}" method="get">
         <select name="status" onchange="this.form.submit()">
-          <option value="all" {% if request.GET.status == 'all' %}selected{% endif %}>Всі статуси</option>
           {% for status_value, status_label in form.fields.status.choices %}
             <option value="{{ status_value }}"
                     {% if request.GET.status == status_value %}selected{% endif %}>{{ status_label }}</option>
@@ -29,12 +28,20 @@
         </select>
 
         <select name="priority" onchange="this.form.submit()">
-          <option value="all" {% if request.GET.priority == 'all' %}selected{% endif %}>Всі пріоритети</option>
           {% for priority_value, priority_label in form.fields.priority.choices %}
             <option value="{{ priority_value }}"
                     {% if request.GET.priority == priority_value %}selected{% endif %}>{{ priority_label }}</option>
           {% endfor %}
         </select>
+
+        <select name="team" onchange="this.form.submit()">
+    {% for team_id, team_name in form.fields.team.choices %}
+        <option value="{{ team_id }}"
+                {% if request.GET.team == team_id|stringformat:"s" %}selected{% endif %}>
+            {{ team_name }}
+        </option>
+    {% endfor %}
+</select>
       </form>
     </section>
 

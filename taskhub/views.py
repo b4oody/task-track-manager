@@ -140,28 +140,40 @@ def teams_page_view(request: HttpRequest) -> HttpResponse:
 
 
 def tasks_page_view(request: HttpRequest) -> HttpResponse:
-    worker = Worker.objects.get(pk=request.user.id)
+    worker = (Worker.objects
+              .select_related("position")
+              .get(pk=request.user.id)
+              )
 
-    worker_tasks = Task.objects.filter(project__team__members=worker)
+    worker_tasks = (
+        Task.objects
+        .filter(project__team__members=worker)
+        .select_related("task_type", "project__team")
+        .only(
+            "id",
+            "name",
+            "is_completed",
+            "priority",
+            "task_type__name",
+            "project__team__name")
+    )
 
-    form = TaskFilterForm(request.GET)
+    form = TaskFilterForm(request.GET, user=request.user)
     if form.is_valid():
         status = form.cleaned_data.get("status")
         priority = form.cleaned_data.get("priority")
-
-        filters = Q()
+        team = form.cleaned_data.get("team")
         if status and status != "all":
             if status == "active":
-                filters &= Q(is_completed=False)
+                worker_tasks = worker_tasks.filter(is_completed=False)
             elif status == "completed":
-                filters &= Q(is_completed=True)
+                worker_tasks = worker_tasks.filter(is_completed=True)
 
         if priority and priority != "all":
-            filters &= Q(priority=priority)
+            worker_tasks = worker_tasks.filter(priority=priority)
 
-        if filters:
-            worker_tasks = worker_tasks.filter(filters)
-
+        if team and team != "all":
+            worker_tasks = worker_tasks.filter(project__team_id=team)
     page_obj = pagination(request, worker_tasks, items_per_page=6)
     context = {
         "page_obj": page_obj,

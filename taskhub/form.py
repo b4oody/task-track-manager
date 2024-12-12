@@ -5,9 +5,9 @@ from taskhub.mixins import clean_ids_field, clean_project_name
 from taskhub.models import Worker, Position, Team, Project, Task, Commentary, PRIORITY_CHOICES
 
 STATUS_CHOICES = [
-    ("all", "All"),
-    ("active", "In progress"),
-    ("completed", "Completed"),
+    ('all', 'Всі статуси'),
+    ('active', 'Активні'),
+    ('completed', 'Завершені'),
 ]
 
 
@@ -254,12 +254,23 @@ class StatusFilterForm(forms.Form):
 
 
 class TaskFilterForm(forms.Form):
-    STATUS_CHOICES = STATUS_CHOICES
-    PRIORITY_CHOICES = PRIORITY_CHOICES
+    PRIORITY_CHOICES.insert(0, ('all', 'Всі пріоритети'))
+    team_choices = [
+                       ("all", "Всі команди")
+                   ] + [(team.id, team.name) for team in Team.objects.all()]
 
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
     priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
-    team = forms.ModelChoiceField(queryset=Team.objects.none(), required=False)
+    team = forms.ChoiceField(choices=team_choices, required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
+        if self.user:
+            self.fields["team"].choices = [("all", "Всі команди")] + [
+                (team.id, team.name) for team in Team.objects.filter(members=self.user)
+            ]
 
 
 class WorkerChangePasswordForm(PasswordChangeForm):
