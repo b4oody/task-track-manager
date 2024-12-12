@@ -103,10 +103,12 @@ def get_profile(request: HttpRequest) -> HttpResponse:
 
 
 def projects_page_view(request: HttpRequest) -> HttpResponse:
-    worker = Worker.objects.get(pk=request.user.id)
-
+    worker = (Worker.objects
+              .select_related("position")
+              .get(pk=request.user.id))
+    worker_team = worker.teams.all()
     worker_projects = Project.objects.filter(
-        team__in=worker.teams.all()
+        team__in=worker_team
     ).select_related("team").prefetch_related("team__members")
     form = StatusFilterForm(request.GET)
     if form.is_valid():
@@ -315,8 +317,11 @@ class DeleteProjectView(generic.DeleteView):
 
 
 def project_details_page_view(request, pk: int) -> HttpResponse:
-    project = Project.objects.get(pk=pk)
-    page_obj = pagination(request, project.tasks.all(), 8)
+    project = (Project.objects
+               .select_related("team")
+               .prefetch_related("tasks").get(pk=pk))
+    project_tasks = project.tasks.all()
+    page_obj = pagination(request, project_tasks, 8)
     return render(
         request,
         "projects/project-details.html",
