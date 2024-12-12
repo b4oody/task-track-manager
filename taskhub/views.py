@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
 from django.core.paginator import Paginator
@@ -125,10 +125,13 @@ def projects_page_view(request: HttpRequest) -> HttpResponse:
 
 
 def teams_page_view(request: HttpRequest) -> HttpResponse:
-    worker = Worker.objects.get(pk=request.user.id)
-    page_obj = pagination(request, Team.objects.filter(members=worker), 8)
+    worker = (Worker.objects
+              .select_related("position")
+              .prefetch_related("teams")
+              .get(pk=request.user.id))
+    worker_teams = worker.teams.all()
+    page_obj = pagination(request, worker_teams, 8)
     context = {
-        "worker_teams": Team.objects.filter(members=worker),
         "page_obj": page_obj,
     }
     return render(request, "teams/user-teams.html", context=context)
@@ -252,8 +255,11 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
-    team = Team.objects.get(pk=pk)
-    page_obj = pagination(request, team.projects.all(), 4)
+    team = (Team.objects
+            .prefetch_related("members__position", "projects")
+            .get(pk=pk))
+    team_projects = team.projects.all()
+    page_obj = pagination(request, team_projects, 4)
     return render(
         request,
         "teams/team-profile.html",
