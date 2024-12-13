@@ -1,6 +1,6 @@
-from django.contrib.auth import login, get_user
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
@@ -11,8 +11,17 @@ from django.views import generic, View
 from taskhub.form import (
     RegistrationForm,
     CreateTeamForm,
-    CreateProjectForm, CreateTasksForm, CreateCommentaryForm, AddMemberForm, UpdateTeamForm, UpdateTaskForm,
-    UpdateProjectForm, StatusFilterForm, TaskFilterForm, WorkerChangePasswordForm,
+    CreateProjectForm,
+    CreateTasksForm,
+    CreateCommentaryForm,
+    AddMemberForm,
+    UpdateTeamForm,
+    UpdateTaskForm,
+    UpdateProjectForm,
+    StatusFilterForm,
+    TaskFilterForm,
+    WorkerChangePasswordForm,
+    ResetPasswordEmailForm,
 )
 from taskhub.models import (
     Worker,
@@ -153,6 +162,7 @@ def tasks_page_view(request: HttpRequest) -> HttpResponse:
             "id",
             "name",
             "is_completed",
+            "deadline",
             "priority",
             "task_type__name",
             "project__team__name")
@@ -421,3 +431,10 @@ class WorkerPasswordChange(PasswordChangeView):
     form_class = WorkerChangePasswordForm
     success_url = reverse_lazy("taskhub:password_change_done")
     template_name = "registration/password_change_form.html"
+
+
+class PasswordResetEmailFormView(PasswordResetView):
+    form_class = ResetPasswordEmailForm
+    template_name = "reset_password/password_reset_form.html"
+    email_template_name = "reset_password/password_reset_email.html"
+    success_url = reverse_lazy("taskhub:password_reset_done")

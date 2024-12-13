@@ -1,8 +1,24 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    PasswordChangeForm,
+    PasswordResetForm
+)
+from django.core.exceptions import ValidationError
 
-from taskhub.mixins import clean_ids_field, clean_project_name
-from taskhub.models import Worker, Position, Team, Project, Task, Commentary, PRIORITY_CHOICES
+from taskhub.mixins import (
+    clean_ids_field,
+    clean_project_name
+)
+from taskhub.models import (
+    Worker,
+    Position,
+    Team,
+    Project,
+    Task,
+    Commentary,
+    PRIORITY_CHOICES
+)
 
 STATUS_CHOICES = [
     ('all', 'Всі статуси'),
@@ -295,3 +311,17 @@ class WorkerChangePasswordForm(PasswordChangeForm):
             attrs={"autocomplete": "current-password", "autofocus": True}
         ),
     )
+
+
+class ResetPasswordEmailForm(PasswordResetForm):
+    email = forms.EmailField(
+        label="Email",
+        required=True,
+        widget=forms.EmailInput(attrs={"autocomplete": "email"})
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if not Worker.objects.filter(email=email).exists():
+            raise ValidationError("Цей email не зареєстрований у системі.")
+        return email
