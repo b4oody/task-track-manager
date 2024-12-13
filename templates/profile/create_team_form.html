@@ -16,6 +16,7 @@
         {% csrf_token %}
         {{ form }}
         <button type="submit">Створити команду</button>
+        <a href="{{ referer }}" class="btn-link">Назад</a>
       </form>
 
     </div>

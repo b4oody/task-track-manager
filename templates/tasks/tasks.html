@@ -55,6 +55,7 @@
           <h2><a href="{% url 'taskhub:task-details' task.pk %}">{{ task.name }}</a></h2>
           <p><strong>Статус:</strong>{{ task.status_display }}</p>
           <p><strong>Пріоритет:</strong>{{ task.priority }}</p>
+          <p><strong>Deadline:</strong>{{ task.deadline }}</p>
           <p><strong>Команда:</strong>{{ task.project.team.name }}</p>
         </div>
       {% endfor %}
