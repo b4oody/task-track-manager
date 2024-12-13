@@ -1,9 +1,9 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
 from task_tracker_manager import settings
-
 
 PRIORITY_CHOICES = [
     ("urgent", "Urgent"),
@@ -56,6 +56,9 @@ class Team(models.Model):
         blank=True,
     )
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self) -> str:
         return self.name
 
@@ -72,15 +75,22 @@ class Project(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["deadline"]
+
     def status_display(self):
         return "Completed" if self.is_completed else "In Progress"
 
     def __str__(self) -> str:
         return f"{self.name}: ({self.deadline} {self.status_display()})"
 
+    def clean(self):
+        super().clean()
+        if self.deadline <= timezone.now().date():
+            raise ValidationError({"deadline": "The deadline cannot be in the past."})
+
     def save(self, *args, **kwargs):
-        if self.deadline < timezone.now().date():
-            self.is_completed = True
+        self.full_clean()
         super().save(*args, **kwargs)
 
 
@@ -113,7 +123,7 @@ class Task(models.Model):
     )
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["deadline"]
         indexes = [
             models.Index(fields=["deadline", "is_completed", "priority"]),
         ]
@@ -124,9 +134,13 @@ class Task(models.Model):
     def __str__(self) -> str:
         return f"{self.name} ({self.status_display()})"
 
+    def clean(self):
+        super().clean()
+        if self.deadline <= timezone.now().date():
+            raise ValidationError({"deadline": "The deadline cannot be in the past."})
+
     def save(self, *args, **kwargs):
-        if self.deadline < timezone.now().date():
-            self.is_completed = True
+        self.full_clean()
         super().save(*args, **kwargs)
 
 
