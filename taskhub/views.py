@@ -304,6 +304,12 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
     form_class = AddMemberForm
     template_name = "forms/add_new_member.html"
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        kwargs["team"] = self.kwargs["pk"]
+        return kwargs
+
     def form_valid(self, form):
         member_id = form.cleaned_data["worker_id"]
         new_member = get_object_or_404(Worker, id=member_id)
@@ -311,9 +317,6 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
         if new_member not in team.members.all():
             team.members.add(new_member)
             team.save()
-        referer = self.request.POST.get("referer", None)
-        if referer:
-            return HttpResponseRedirect(referer)
         return super().form_valid(form)
 
     def get_success_url(self):

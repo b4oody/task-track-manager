@@ -178,10 +178,20 @@ class AddMemberForm(forms.ModelForm):
         model = Worker
         fields = ["worker_id"]
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        self.team_id = kwargs.pop("team", None)
+        super().__init__(*args, **kwargs)
+
     def clean_worker_id(self):
         worker_id = self.cleaned_data.get("worker_id")
+        team = Team.objects.get(pk=self.team_id)
+        if self.user and worker_id == self.user.id:
+            raise forms.ValidationError(f"You are already on the team.")
         if not worker_id:
             raise forms.ValidationError("Worker ID cannot be empty. Please enter a valid ID.")
+        if team.members.filter(id=worker_id).exists():
+            raise forms.ValidationError("Member already in the team")
         if not Worker.objects.filter(id=worker_id).exists():
             raise forms.ValidationError(f"Worker with ID '{worker_id}' does not exist.")
         return worker_id
