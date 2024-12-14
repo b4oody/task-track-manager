@@ -119,7 +119,6 @@ class Task(models.Model):
         Project,
         on_delete=models.CASCADE,
         related_name="tasks",
-
     )
 
     class Meta:
@@ -146,14 +145,10 @@ class Task(models.Model):
 
 class Commentary(models.Model):
     worker = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="commentaries"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="commentaries"
     )
     task = models.ForeignKey(
-        Task,
-        on_delete=models.CASCADE,
-        related_name="commentaries"
+        Task, on_delete=models.CASCADE, related_name="commentaries"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     commentary_content = models.TextField()

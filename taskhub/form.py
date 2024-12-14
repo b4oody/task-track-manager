@@ -2,14 +2,11 @@ from django import forms
 from django.contrib.auth.forms import (
     UserCreationForm,
     PasswordChangeForm,
-    PasswordResetForm
+    PasswordResetForm,
 )
 from django.core.exceptions import ValidationError
 
-from taskhub.mixins import (
-    clean_ids_field,
-    clean_project_name
-)
+from taskhub.mixins import clean_ids_field, clean_project_name
 from taskhub.models import (
     Worker,
     Position,
@@ -17,41 +14,43 @@ from taskhub.models import (
     Project,
     Task,
     Commentary,
-    PRIORITY_CHOICES
+    PRIORITY_CHOICES,
 )
 
 STATUS_CHOICES = [
-    ('all', 'Всі статуси'),
-    ('active', 'Активні'),
-    ('completed', 'Завершені'),
+    ("all", "Всі статуси"),
+    ("active", "Активні"),
+    ("completed", "Завершені"),
 ]
 
 
 class RegistrationForm(UserCreationForm):
     position = forms.CharField(
         required=True,
-        widget=forms.TextInput(attrs={
-            "class": "form-input",
-            "placeholder": "Оберіть або введіть нову посаду"
-        })
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-input",
+                "placeholder": "Оберіть або введіть нову посаду",
+            }
+        ),
     )
 
     class Meta:
         model = Worker
         fields = ["username", "email", "position", "password1", "password2"]
         widgets = {
-            "username": forms.TextInput(attrs={
-                "class": "form-input", "placeholder": "Ім'я користувача"
-            }),
-            "email": forms.EmailInput(attrs={
-                "class": "form-input", "placeholder": "Електронна пошта"
-            }),
-            "password1": forms.PasswordInput(attrs={
-                "class": "form-input", "placeholder": "Пароль"
-            }),
-            "password2": forms.PasswordInput(attrs={
-                "class": "form-input", "placeholder": "Підтвердження паролю"
-            }),
+            "username": forms.TextInput(
+                attrs={"class": "form-input", "placeholder": "Ім'я користувача"}
+            ),
+            "email": forms.EmailInput(
+                attrs={"class": "form-input", "placeholder": "Електронна пошта"}
+            ),
+            "password1": forms.PasswordInput(
+                attrs={"class": "form-input", "placeholder": "Пароль"}
+            ),
+            "password2": forms.PasswordInput(
+                attrs={"class": "form-input", "placeholder": "Підтвердження паролю"}
+            ),
         }
 
     def clean_position(self):
@@ -65,7 +64,7 @@ class CreateTeamForm(forms.ModelForm):
     member_ids = forms.CharField(
         label="Member IDs",
         help_text="Enter user IDs separated by commas",
-        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
     class Meta:
@@ -94,23 +93,19 @@ class CreateTeamForm(forms.ModelForm):
 class CreateProjectForm(forms.ModelForm):
     team_name = forms.CharField(
         label="Team name",
-        widget=forms.TextInput(attrs={"placeholder": "Text team name"})
+        widget=forms.TextInput(attrs={"placeholder": "Text team name"}),
     )
 
     class Meta:
         model = Project
-        fields = [
-            "name",
-            "description",
-            "deadline",
-            "is_completed",
-            "team_name"
-        ]
+        fields = ["name", "description", "deadline", "is_completed", "team_name"]
 
     def clean_team_name(self):
         team_name = self.cleaned_data.get("team_name")
         if not team_name:
-            raise forms.ValidationError("Team name cannot be empty. Please enter a valid name.")
+            raise forms.ValidationError(
+                "Team name cannot be empty. Please enter a valid name."
+            )
         if not Team.objects.filter(name=team_name).exists():
             raise forms.ValidationError(f"Team with name '{team_name}' does not exist.")
         return team_name
@@ -128,12 +123,12 @@ class CreateTasksForm(forms.ModelForm):
     assignees_ids = forms.CharField(
         label="Assignees IDs",
         help_text="Enter user IDs separated by commas",
-        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
     project_name = forms.CharField(
         label="Project name",
-        widget=forms.TextInput(attrs={"placeholder": "Text project name"})
+        widget=forms.TextInput(attrs={"placeholder": "Text project name"}),
     )
 
     class Meta:
@@ -146,7 +141,7 @@ class CreateTasksForm(forms.ModelForm):
             "priority",
             "task_type",
             "assignees_ids",
-            "project_name"
+            "project_name",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -183,10 +178,7 @@ class CreateCommentaryForm(forms.ModelForm):
 
 
 class AddMemberForm(forms.ModelForm):
-    worker_id = forms.IntegerField(
-        label="ID працівника",
-        required=True
-    )
+    worker_id = forms.IntegerField(label="ID працівника", required=True)
 
     class Meta:
         model = Worker
@@ -203,7 +195,9 @@ class AddMemberForm(forms.ModelForm):
         if self.user and worker_id == self.user.id:
             raise forms.ValidationError(f"You are already on the team.")
         if not worker_id:
-            raise forms.ValidationError("Worker ID cannot be empty. Please enter a valid ID.")
+            raise forms.ValidationError(
+                "Worker ID cannot be empty. Please enter a valid ID."
+            )
         if team.members.filter(id=worker_id).exists():
             raise forms.ValidationError("Member already in the team")
         if not Worker.objects.filter(id=worker_id).exists():
@@ -215,7 +209,7 @@ class UpdateTeamForm(forms.ModelForm):
     member_ids = forms.CharField(
         label="Member IDs",
         help_text="Enter user IDs separated by commas",
-        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
     class Meta:
@@ -227,7 +221,9 @@ class UpdateTeamForm(forms.ModelForm):
 
         if self.instance and self.instance.pk:
             members = self.instance.members.all()
-            self.fields["member_ids"].initial = ', '.join(str(worker.id) for worker in members)
+            self.fields["member_ids"].initial = ", ".join(
+                str(worker.id) for worker in members
+            )
 
     def clean_member_ids(self):
         return clean_ids_field(self, "member_ids", Worker)
@@ -237,12 +233,12 @@ class UpdateTaskForm(forms.ModelForm):
     assignees_ids = forms.CharField(
         label="Assignees IDs",
         help_text="Enter user IDs separated by commas",
-        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"})
+        widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
     project_name = forms.CharField(
         label="Project name",
-        widget=forms.TextInput(attrs={"placeholder": "Text project name"})
+        widget=forms.TextInput(attrs={"placeholder": "Text project name"}),
     )
 
     class Meta:
@@ -255,7 +251,7 @@ class UpdateTaskForm(forms.ModelForm):
             "priority",
             "task_type",
             "assignees_ids",
-            "project_name"
+            "project_name",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -263,7 +259,9 @@ class UpdateTaskForm(forms.ModelForm):
 
         if self.instance and self.instance.pk:
             assignees = self.instance.assignees.all()
-            self.fields["assignees_ids"].initial = ', '.join(str(worker.id) for worker in assignees)
+            self.fields["assignees_ids"].initial = ", ".join(
+                str(worker.id) for worker in assignees
+            )
 
             project = self.instance.project
             self.fields["project_name"].initial = project.name if project else ""
@@ -294,10 +292,10 @@ class StatusFilterForm(forms.Form):
 
 
 class TaskFilterForm(forms.Form):
-    PRIORITY_CHOICES.insert(0, ('all', 'Всі пріоритети'))
-    team_choices = [
-                       ("all", "Всі команди")
-                   ] + [(team.id, team.name) for team in Team.objects.all()]
+    PRIORITY_CHOICES.insert(0, ("all", "Всі пріоритети"))
+    team_choices = [("all", "Всі команди")] + [
+        (team.id, team.name) for team in Team.objects.all()
+    ]
 
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
     priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
@@ -341,7 +339,7 @@ class ResetPasswordEmailForm(PasswordResetForm):
     email = forms.EmailField(
         label="Email",
         required=True,
-        widget=forms.EmailInput(attrs={"autocomplete": "email"})
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
     )
 
     def clean_email(self):

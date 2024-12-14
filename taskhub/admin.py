@@ -3,14 +3,7 @@ from django.contrib.admin import SimpleListFilter
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from taskhub.models import (
-    TaskType,
-    Position,
-    Worker,
-    Project,
-    Task,
-    Team, Commentary
-)
+from taskhub.models import TaskType, Position, Worker, Project, Task, Team, Commentary
 
 
 @admin.register(TaskType)
@@ -30,12 +23,19 @@ class PositionAdmin(admin.ModelAdmin):
 @admin.register(Worker)
 class WorkerAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("position",)
-    fieldsets = (UserAdmin.fieldsets +
-                 (("Additional info", {"fields": ("position",
-                                                  )}),))
+    fieldsets = UserAdmin.fieldsets + (("Additional info", {"fields": ("position",)}),)
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ("Additional info", {"fields": ("first_name", "last_name", "position",
-                                        )}),)
+        (
+            "Additional info",
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "position",
+                )
+            },
+        ),
+    )
 
 
 class UserFilter(SimpleListFilter):
@@ -67,34 +67,22 @@ class MemberFilter(UserFilter):
 class TeamAdmin(admin.ModelAdmin):
     list_display = ["name", "description", "get_members"]
     list_filter = [MemberFilter]
-    search_fields = ["name", "description", ]
+    search_fields = [
+        "name",
+        "description",
+    ]
 
     def get_members(self, obj):
         return ", ".join([member.username for member in obj.members.all()])
+
     get_members.short_description = "Members"
 
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = [
-        "name",
-        "description",
-        "deadline",
-        "is_completed",
-        "team"
-    ]
-    list_filter = [
-        "deadline",
-        "is_completed",
-        "team__name"
-    ]
-    search_fields = [
-        "name",
-        "description",
-        "deadline",
-        "is_completed",
-        "team__name"
-    ]
+    list_display = ["name", "description", "deadline", "is_completed", "team"]
+    list_filter = ["deadline", "is_completed", "team__name"]
+    search_fields = ["name", "description", "deadline", "is_completed", "team__name"]
 
 
 class AssigneeFilter(UserFilter):
@@ -114,7 +102,7 @@ class TaskAdmin(admin.ModelAdmin):
         "priority",
         "task_type",
         "get_assignees",
-        "project"
+        "project",
     ]
     list_filter = [
         "deadline",
@@ -122,7 +110,7 @@ class TaskAdmin(admin.ModelAdmin):
         "priority",
         "task_type__name",
         AssigneeFilter,
-        "project__name"
+        "project__name",
     ]
     search_fields = [
         "name",
@@ -132,11 +120,11 @@ class TaskAdmin(admin.ModelAdmin):
         "priority",
         "task_type__name",
         "project__name",
-
     ]
 
     def get_assignees(self, obj):
         return ", ".join([worker.username for worker in obj.assignees.all()])
+
     get_assignees.short_description = "Assignees"
 
 

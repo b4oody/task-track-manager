@@ -25,13 +25,7 @@ from taskhub.form import (
     WorkerChangePasswordForm,
     ResetPasswordEmailForm,
 )
-from taskhub.models import (
-    Worker,
-    Project,
-    Position,
-    Team,
-    Task, TaskType, Commentary
-)
+from taskhub.models import Worker, Project, Position, Team, Task, TaskType, Commentary
 
 
 def get_index_page(request: HttpRequest) -> HttpResponse:
@@ -52,9 +46,8 @@ def sign_up(request: HttpRequest) -> HttpResponse:
         form = RegistrationForm()
     positions = Position.objects.all()
     return render(
-        request,
-        "registration/register.html",
-        {"form": form, "positions": positions})
+        request, "registration/register.html", {"form": form, "positions": positions}
+    )
 
 
 def pagination(request: HttpRequest, queryset, items_per_page=5):
@@ -77,19 +70,21 @@ def pagination(request: HttpRequest, queryset, items_per_page=5):
 
 @login_required
 def get_profile(request: HttpRequest) -> HttpResponse:
-    worker = (Worker.objects
-              .select_related("position")
-              .prefetch_related("teams", "tasks")
-              .only("id",
-                    "position__id",
-                    "position__name",
-                    "position_id",
-                    "username",
-                    "email",
-                    "first_name",
-                    "last_name"
-                    )
-              .get(pk=request.user.id))
+    worker = (
+        Worker.objects.select_related("position")
+        .prefetch_related("teams", "tasks")
+        .only(
+            "id",
+            "position__id",
+            "position__name",
+            "position_id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+        )
+        .get(pk=request.user.id)
+    )
 
     tasks = worker.tasks.aggregate(
         active_tasks=Count("id", filter=Q(is_completed=False)),
@@ -116,13 +111,13 @@ def get_profile(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def projects_page_view(request: HttpRequest) -> HttpResponse:
-    worker = (Worker.objects
-              .select_related("position")
-              .get(pk=request.user.id))
+    worker = Worker.objects.select_related("position").get(pk=request.user.id)
     worker_team = worker.teams.all()
-    worker_projects = Project.objects.filter(
-        team__in=worker_team
-    ).select_related("team").prefetch_related("team__members")
+    worker_projects = (
+        Project.objects.filter(team__in=worker_team)
+        .select_related("team")
+        .prefetch_related("team__members")
+    )
     form = StatusFilterForm(request.GET)
     if form.is_valid():
         status = form.cleaned_data.get("status")
@@ -141,10 +136,11 @@ def projects_page_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def teams_page_view(request: HttpRequest) -> HttpResponse:
-    worker = (Worker.objects
-              .select_related("position")
-              .prefetch_related("teams")
-              .get(pk=request.user.id))
+    worker = (
+        Worker.objects.select_related("position")
+        .prefetch_related("teams")
+        .get(pk=request.user.id)
+    )
     worker_teams = worker.teams.all()
     page_obj = pagination(request, worker_teams, 8)
     context = {
@@ -155,14 +151,10 @@ def teams_page_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def tasks_page_view(request: HttpRequest) -> HttpResponse:
-    worker = (Worker.objects
-              .select_related("position")
-              .get(pk=request.user.id)
-              )
+    worker = Worker.objects.select_related("position").get(pk=request.user.id)
 
     worker_tasks = (
-        Task.objects
-        .filter(project__team__members=worker)
+        Task.objects.filter(project__team__members=worker)
         .select_related("task_type", "project__team")
         .only(
             "id",
@@ -171,7 +163,8 @@ def tasks_page_view(request: HttpRequest) -> HttpResponse:
             "deadline",
             "priority",
             "task_type__name",
-            "project__team__name")
+            "project__team__name",
+        )
     )
 
     form = TaskFilterForm(request.GET, user=request.user)
@@ -208,11 +201,7 @@ def create_team_form_view(request: HttpRequest) -> HttpResponse:
             return redirect("taskhub:teams")
     else:
         form = CreateTeamForm(user=request.user)
-    return render(
-        request,
-        "profile/create_team_form.html",
-        context={"form": form}
-    )
+    return render(request, "profile/create_team_form.html", context={"form": form})
 
 
 @transaction.atomic
@@ -225,11 +214,7 @@ def create_project_form_view(request: HttpRequest) -> HttpResponse:
             return redirect("taskhub:projects")
     else:
         form = CreateProjectForm()
-    return render(
-        request,
-        "profile/create_project_form.html",
-        context={"form": form}
-    )
+    return render(request, "profile/create_project_form.html", context={"form": form})
 
 
 class CreateTypeView(LoginRequiredMixin, generic.CreateView):
@@ -257,11 +242,7 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
             return redirect("taskhub:tasks")
     else:
         form = CreateTasksForm(user=request.user)
-    return render(
-        request,
-        "profile/create_task_form.html",
-        context={"form": form}
-    )
+    return render(request, "profile/create_task_form.html", context={"form": form})
 
 
 @transaction.atomic
@@ -286,18 +267,12 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
         "task": task,
         "comment_form": comment_form,
     }
-    return render(
-        request,
-        "tasks/task-details.html",
-        context
-    )
+    return render(request, "tasks/task-details.html", context)
 
 
 @login_required
 def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
-    team = (Team.objects
-            .prefetch_related("members__position", "projects")
-            .get(pk=pk))
+    team = Team.objects.prefetch_related("members__position", "projects").get(pk=pk)
     team_projects = team.projects.all()
     page_obj = pagination(request, team_projects, 4)
     return render(
@@ -341,7 +316,8 @@ class DeleteMemberFromTeam(LoginRequiredMixin, View):
         return render(
             request,
             self.template_name,
-            {"team": team, "member_to_delete": member_to_delete, "error": error})
+            {"team": team, "member_to_delete": member_to_delete, "error": error},
+        )
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
@@ -374,15 +350,15 @@ class DeleteProjectView(generic.DeleteView):
 
 @login_required
 def project_details_page_view(request, pk: int) -> HttpResponse:
-    project = (Project.objects
-               .select_related("team")
-               .prefetch_related("tasks").get(pk=pk))
+    project = (
+        Project.objects.select_related("team").prefetch_related("tasks").get(pk=pk)
+    )
     project_tasks = project.tasks.all()
     page_obj = pagination(request, project_tasks, 8)
     return render(
         request,
         "projects/project-details.html",
-        context={"project": project, "page_obj": page_obj}
+        context={"project": project, "page_obj": page_obj},
     )
 
 
