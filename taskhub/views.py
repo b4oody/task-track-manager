@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
@@ -111,6 +112,7 @@ def get_profile(request: HttpRequest) -> HttpResponse:
     return render(request, "profile/profile.html", context=context)
 
 
+@login_required
 def projects_page_view(request: HttpRequest) -> HttpResponse:
     worker = (Worker.objects
               .select_related("position")
@@ -135,6 +137,7 @@ def projects_page_view(request: HttpRequest) -> HttpResponse:
     return render(request, "projects/projects.html", context=context)
 
 
+@login_required
 def teams_page_view(request: HttpRequest) -> HttpResponse:
     worker = (Worker.objects
               .select_related("position")
@@ -148,6 +151,7 @@ def teams_page_view(request: HttpRequest) -> HttpResponse:
     return render(request, "teams/user-teams.html", context=context)
 
 
+@login_required
 def tasks_page_view(request: HttpRequest) -> HttpResponse:
     worker = (Worker.objects
               .select_related("position")
@@ -192,6 +196,7 @@ def tasks_page_view(request: HttpRequest) -> HttpResponse:
     return render(request, "tasks/tasks.html", context=context)
 
 
+@login_required
 def create_team_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CreateTeamForm(request.POST)
@@ -207,6 +212,7 @@ def create_team_form_view(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required
 def create_project_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CreateProjectForm(request.POST)
@@ -222,7 +228,7 @@ def create_project_form_view(request: HttpRequest) -> HttpResponse:
     )
 
 
-class CreateTypeView(generic.CreateView):
+class CreateTypeView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     fields = "__all__"
     template_name = "tasks/create_type_form.html"
@@ -236,6 +242,7 @@ class CreateTypeView(generic.CreateView):
         return response
 
 
+@login_required
 def create_task_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CreateTasksForm(request.POST)
@@ -251,6 +258,7 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required
 def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     task = (
         Task.objects.select_related("project__team", "task_type")
@@ -278,6 +286,7 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     )
 
 
+@login_required
 def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     team = (Team.objects
             .prefetch_related("members__position", "projects")
@@ -291,7 +300,7 @@ def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     )
 
 
-class AddNewMemberToTeam(generic.FormView):
+class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
     form_class = AddMemberForm
     template_name = "forms/add_new_member.html"
 
@@ -311,7 +320,7 @@ class AddNewMemberToTeam(generic.FormView):
         return reverse_lazy("taskhub:team-details", kwargs={"pk": self.kwargs["pk"]})
 
 
-class DeleteMemberFromTeam(View):
+class DeleteMemberFromTeam(LoginRequiredMixin, View):
     template_name = "forms/confirm_delete_member.html"
 
     def get(self, request, *args, **kwargs):
@@ -338,6 +347,7 @@ class DeleteProjectView(generic.DeleteView):
     success_url = reverse_lazy("taskhub:projects")
 
 
+@login_required
 def project_details_page_view(request, pk: int) -> HttpResponse:
     project = (Project.objects
                .select_related("team")
@@ -351,13 +361,13 @@ def project_details_page_view(request, pk: int) -> HttpResponse:
     )
 
 
-class DeleteTaskView(generic.DeleteView):
+class DeleteTaskView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     template_name = "forms/confirm_delete_task.html"
     success_url = reverse_lazy("taskhub:tasks")
 
 
-class UpdateProjectView(generic.UpdateView):
+class UpdateProjectView(LoginRequiredMixin, generic.UpdateView):
     model = Project
     form_class = UpdateProjectForm
     template_name = "projects/project-update.html"
@@ -378,13 +388,13 @@ class UpdateProjectView(generic.UpdateView):
         return reverse_lazy("taskhub:project-details", kwargs={"pk": self.object.pk})
 
 
-class DeleteTeamView(generic.DeleteView):
+class DeleteTeamView(LoginRequiredMixin, generic.DeleteView):
     model = Team
     template_name = "forms/confirm_delete_team.html"
     success_url = reverse_lazy("taskhub:teams")
 
 
-class UpdateTeamView(generic.UpdateView):
+class UpdateTeamView(LoginRequiredMixin, generic.UpdateView):
     model = Team
     form_class = UpdateTeamForm
     template_name = "teams/team-update.html"
@@ -401,7 +411,7 @@ class UpdateTeamView(generic.UpdateView):
         return reverse_lazy("taskhub:team-details", kwargs={"pk": self.object.pk})
 
 
-class UpdateTaskView(generic.UpdateView):
+class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
     model = Task
     form_class = UpdateTaskForm
     template_name = "tasks/task-update.html"
@@ -419,7 +429,7 @@ class UpdateTaskView(generic.UpdateView):
         return reverse_lazy("taskhub:task-details", kwargs={"pk": self.object.pk})
 
 
-class DeleteCommentaryView(generic.DeleteView):
+class DeleteCommentaryView(LoginRequiredMixin, generic.DeleteView):
     model = Commentary
 
     def get_success_url(self):
@@ -427,13 +437,13 @@ class DeleteCommentaryView(generic.DeleteView):
         return reverse_lazy("taskhub:task-details", kwargs={"pk": task_id})
 
 
-class WorkerPasswordChange(PasswordChangeView):
+class WorkerPasswordChange(LoginRequiredMixin, PasswordChangeView):
     form_class = WorkerChangePasswordForm
     success_url = reverse_lazy("taskhub:password_change_done")
     template_name = "registration/password_change_form.html"
 
 
-class PasswordResetEmailFormView(PasswordResetView):
+class PasswordResetEmailFormView(LoginRequiredMixin, PasswordResetView):
     form_class = ResetPasswordEmailForm
     template_name = "reset_password/password_reset_form.html"
     email_template_name = "reset_password/password_reset_email.html"
