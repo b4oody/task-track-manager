@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -37,6 +38,7 @@ def get_index_page(request: HttpRequest) -> HttpResponse:
     return render(request, "index/index.html")
 
 
+@transaction.atomic
 def sign_up(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = RegistrationForm(request.POST)
@@ -196,6 +198,7 @@ def tasks_page_view(request: HttpRequest) -> HttpResponse:
     return render(request, "tasks/tasks.html", context=context)
 
 
+@transaction.atomic
 @login_required
 def create_team_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
@@ -212,6 +215,7 @@ def create_team_form_view(request: HttpRequest) -> HttpResponse:
     )
 
 
+@transaction.atomic
 @login_required
 def create_project_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
@@ -234,6 +238,7 @@ class CreateTypeView(LoginRequiredMixin, generic.CreateView):
     template_name = "tasks/create_type_form.html"
     success_url = reverse_lazy("taskhub:tasks")
 
+    @transaction.atomic
     def form_valid(self, form):
         response = super().form_valid(form)
         referer = self.request.POST.get("referer", None)
@@ -242,6 +247,7 @@ class CreateTypeView(LoginRequiredMixin, generic.CreateView):
         return response
 
 
+@transaction.atomic
 @login_required
 def create_task_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
@@ -258,6 +264,7 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
     )
 
 
+@transaction.atomic
 @login_required
 def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     task = (
@@ -310,6 +317,7 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
         kwargs["team"] = self.kwargs["pk"]
         return kwargs
 
+    @transaction.atomic
     def form_valid(self, form):
         member_id = form.cleaned_data["worker_id"]
         new_member = get_object_or_404(Worker, id=member_id)
@@ -335,6 +343,7 @@ class DeleteMemberFromTeam(LoginRequiredMixin, View):
             self.template_name,
             {"team": team, "member_to_delete": member_to_delete, "error": error})
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         team = get_object_or_404(Team, pk=kwargs["team_pk"])
         member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
@@ -354,6 +363,13 @@ class DeleteProjectView(generic.DeleteView):
     model = Project
     template_name = "forms/confirm_delete_project.html"
     success_url = reverse_lazy("taskhub:projects")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        """
+        Перевизначення методу delete для додавання транзакції.
+        """
+        return super().delete(request, *args, **kwargs)
 
 
 @login_required
@@ -375,6 +391,13 @@ class DeleteTaskView(LoginRequiredMixin, generic.DeleteView):
     template_name = "forms/confirm_delete_task.html"
     success_url = reverse_lazy("taskhub:tasks")
 
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        """
+        Перевизначення методу delete для додавання транзакції.
+        """
+        return super().delete(request, *args, **kwargs)
+
 
 class UpdateProjectView(LoginRequiredMixin, generic.UpdateView):
     model = Project
@@ -386,6 +409,7 @@ class UpdateProjectView(LoginRequiredMixin, generic.UpdateView):
         kwargs["user"] = self.request.user
         return kwargs
 
+    @transaction.atomic
     def form_valid(self, form):
         team_update = form.cleaned_data["teams_choice"]
         project = self.object
@@ -402,12 +426,20 @@ class DeleteTeamView(LoginRequiredMixin, generic.DeleteView):
     template_name = "forms/confirm_delete_team.html"
     success_url = reverse_lazy("taskhub:teams")
 
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        """
+        Перевизначення методу delete для додавання транзакції.
+        """
+        return super().delete(request, *args, **kwargs)
+
 
 class UpdateTeamView(LoginRequiredMixin, generic.UpdateView):
     model = Team
     form_class = UpdateTeamForm
     template_name = "teams/team-update.html"
 
+    @transaction.atomic
     def form_valid(self, form):
         workers = form.cleaned_data["member_ids"]
         team = self.object
@@ -425,6 +457,7 @@ class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
     form_class = UpdateTaskForm
     template_name = "tasks/task-update.html"
 
+    @transaction.atomic
     def form_valid(self, form):
         workers = form.cleaned_data["assignees_ids"]
         project = form.cleaned_data["project_name"]
@@ -441,19 +474,34 @@ class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
 class DeleteCommentaryView(LoginRequiredMixin, generic.DeleteView):
     model = Commentary
 
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        """
+        Перевизначення методу delete для додавання транзакції.
+        """
+        return super().delete(request, *args, **kwargs)
+
     def get_success_url(self):
         task_id = self.object.task.pk
         return reverse_lazy("taskhub:task-details", kwargs={"pk": task_id})
 
 
-class WorkerPasswordChange(LoginRequiredMixin, PasswordChangeView):
+class WorkerPasswordChange(PasswordChangeView):
     form_class = WorkerChangePasswordForm
     success_url = reverse_lazy("taskhub:password_change_done")
     template_name = "registration/password_change_form.html"
 
+    @transaction.atomic
+    def form_valid(self, form):
+        return super().form_valid(form)
 
-class PasswordResetEmailFormView(LoginRequiredMixin, PasswordResetView):
+
+class PasswordResetEmailFormView(PasswordResetView):
     form_class = ResetPasswordEmailForm
     template_name = "reset_password/password_reset_form.html"
     email_template_name = "reset_password/password_reset_email.html"
     success_url = reverse_lazy("taskhub:password_reset_done")
+
+    @transaction.atomic
+    def form_valid(self, form):
+        return super().form_valid(form)
