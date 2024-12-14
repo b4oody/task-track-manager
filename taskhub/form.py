@@ -72,6 +72,13 @@ class CreateTeamForm(forms.ModelForm):
         model = Team
         fields = ["name", "description", "member_ids"]
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
+        if not self.instance.pk:
+            self.fields["member_ids"].initial = str(self.user.id)
+
     def clean_member_ids(self):
         return clean_ids_field(self, "member_ids", Worker)
 
@@ -141,6 +148,13 @@ class CreateTasksForm(forms.ModelForm):
             "assignees_ids",
             "project_name"
         ]
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
+        if not self.instance.pk:
+            self.fields["assignees_ids"].initial = str(self.user.id)
 
     def clean_assignees_ids(self):
         return clean_ids_field(self, "assignees_ids", Worker)

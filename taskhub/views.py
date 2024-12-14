@@ -199,12 +199,12 @@ def tasks_page_view(request: HttpRequest) -> HttpResponse:
 @login_required
 def create_team_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CreateTeamForm(request.POST)
+        form = CreateTeamForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return redirect("taskhub:teams")
     else:
-        form = CreateTeamForm()
+        form = CreateTeamForm(user=request.user)
     return render(
         request,
         "profile/create_team_form.html",
@@ -245,12 +245,12 @@ class CreateTypeView(LoginRequiredMixin, generic.CreateView):
 @login_required
 def create_task_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CreateTasksForm(request.POST)
+        form = CreateTasksForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return redirect("taskhub:tasks")
     else:
-        form = CreateTasksForm()
+        form = CreateTasksForm(user=request.user)
     return render(
         request,
         "profile/create_task_form.html",
