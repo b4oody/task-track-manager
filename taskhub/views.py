@@ -326,18 +326,24 @@ class DeleteMemberFromTeam(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         team = get_object_or_404(Team, pk=kwargs["team_pk"])
         member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
+        error = kwargs.get("error", None)
         return render(
             request,
             self.template_name,
-            {"team": team, "member_to_delete": member_to_delete})
+            {"team": team, "member_to_delete": member_to_delete, "error": error})
 
-    @staticmethod
-    def post(request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         team = get_object_or_404(Team, pk=kwargs["team_pk"])
         member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
-        if member_to_delete in team.members.all():
-            team.members.remove(member_to_delete)
-            team.save()
+        if member_to_delete == request.user:
+            return self.get(
+                request,
+                *args,
+                **kwargs,
+                error="You cannot delete yourself from the team."
+            )
+        team.members.remove(member_to_delete)
+        team.save()
         return redirect("taskhub:team-details", pk=team.pk)
 
 
