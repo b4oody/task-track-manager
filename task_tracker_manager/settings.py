@@ -63,7 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "taskhub.context_processors.http_referer"
+                "taskhub.context_processors.http_referer",
             ],
         },
     },
@@ -137,7 +137,7 @@ INTERNAL_IPS = [
 
 CSRF_COOKIE_HTTPONLY = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True

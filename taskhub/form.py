@@ -6,7 +6,7 @@ from django.contrib.auth.forms import (
 )
 from django.core.exceptions import ValidationError
 
-from taskhub.utils import clean_ids_field, clean_project_name
+from taskhub.utils import clean_ids_field
 from taskhub.models import (
     Worker,
     Position,
@@ -91,20 +91,11 @@ class CreateTeamForm(forms.ModelForm):
 
 
 class CreateProjectForm(forms.ModelForm):
-    teams_choice = forms.ModelChoiceField(
-        queryset=Team.objects.none(),
-        label="Teams"
-    )
+    teams_choice = forms.ModelChoiceField(queryset=Team.objects.none(), label="Teams")
 
     class Meta:
         model = Project
-        fields = [
-            "name",
-            "description",
-            "deadline",
-            "is_completed",
-            "teams_choice"
-            ]
+        fields = ["name", "description", "deadline", "is_completed", "teams_choice"]
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
@@ -127,10 +118,7 @@ class CreateTasksForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
-    project_choice = forms.ModelChoiceField(
-        queryset=Team.objects.none(),
-        label="Teams"
-    )
+    project_choice = forms.ModelChoiceField(queryset=Team.objects.none(), label="Teams")
 
     class Meta:
         model = Task
@@ -233,8 +221,7 @@ class UpdateTaskForm(forms.ModelForm):
     )
 
     project_choice = forms.ModelChoiceField(
-        queryset=Team.objects.none(),
-        label="Project"
+        queryset=Team.objects.none(), label="Project"
     )
 
     class Meta:

@@ -5,7 +5,11 @@ from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseRedirect,
+)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic, View
@@ -25,15 +29,7 @@ from taskhub.form import (
     WorkerChangePasswordForm,
     ResetPasswordEmailForm,
 )
-from taskhub.models import (
-    Worker,
-    Project,
-    Position,
-    Team,
-    Task,
-    TaskType,
-    Commentary
-)
+from taskhub.models import Worker, Project, Position, Team, Task, TaskType, Commentary
 
 
 def get_index_page(request: HttpRequest) -> HttpResponse:
@@ -54,9 +50,7 @@ def sign_up(request: HttpRequest) -> HttpResponse:
         form = RegistrationForm()
     positions = Position.objects.all()
     return render(
-        request,
-        "registration/register.html",
-        {"form": form, "positions": positions}
+        request, "registration/register.html", {"form": form, "positions": positions}
     )
 
 
@@ -211,11 +205,7 @@ def create_team_form_view(request: HttpRequest) -> HttpResponse:
             return redirect("taskhub:teams")
     else:
         form = CreateTeamForm(user=request.user)
-    return render(
-        request,
-        "profile/create_team_form.html",
-        context={"form": form}
-    )
+    return render(request, "profile/create_team_form.html", context={"form": form})
 
 
 @transaction.atomic
@@ -228,11 +218,7 @@ def create_project_form_view(request: HttpRequest) -> HttpResponse:
             return redirect("taskhub:projects")
     else:
         form = CreateProjectForm(user=request.user)
-    return render(
-        request,
-        "profile/create_project_form.html",
-        context={"form": form}
-    )
+    return render(request, "profile/create_project_form.html", context={"form": form})
 
 
 class CreateTypeView(LoginRequiredMixin, generic.CreateView):
@@ -260,11 +246,7 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
             return redirect("taskhub:tasks")
     else:
         form = CreateTasksForm(user=request.user)
-    return render(
-        request,
-        "profile/create_task_form.html",
-        context={"form": form}
-    )
+    return render(request, "profile/create_task_form.html", context={"form": form})
 
 
 @transaction.atomic
@@ -272,11 +254,7 @@ def create_task_form_view(request: HttpRequest) -> HttpResponse:
 def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
     task = (
         Task.objects.select_related("project__team", "task_type")
-        .prefetch_related(
-            "assignees",
-            "assignees__position",
-            "commentaries__worker"
-        )
+        .prefetch_related("assignees", "assignees__position", "commentaries__worker")
         .get(pk=pk)
     )
     if request.method == "POST":
@@ -298,9 +276,7 @@ def task_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def team_details_page_view(request: HttpRequest, pk: int) -> HttpResponse:
-    team = (Team.objects
-            .prefetch_related("members__position", "projects")
-            .get(pk=pk))
+    team = Team.objects.prefetch_related("members__position", "projects").get(pk=pk)
     team_projects = team.projects.all()
     page_obj = pagination(request, team_projects, 4)
     return render(
@@ -322,8 +298,7 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
 
     def dispatch(self, request, *args, **kwargs):
         team = get_object_or_404(
-            Team.objects.prefetch_related("members"),
-            pk=self.kwargs["pk"]
+            Team.objects.prefetch_related("members"), pk=self.kwargs["pk"]
         )
         if not team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -340,17 +315,16 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "taskhub:team-details",
-            kwargs={"pk": self.kwargs["pk"]}
-        )
+        return reverse_lazy("taskhub:team-details", kwargs={"pk": self.kwargs["pk"]})
 
 
 class DeleteMemberFromTeam(LoginRequiredMixin, View):
     template_name = "forms/confirm_delete_member.html"
 
     def dispatch(self, request, *args, **kwargs):
-        team = get_object_or_404(Team.objects.prefetch_related("members"), pk=kwargs["team_pk"])
+        team = get_object_or_404(
+            Team.objects.prefetch_related("members"), pk=kwargs["team_pk"]
+        )
         if not team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
         return super().dispatch(request, *args, **kwargs)
@@ -362,18 +336,12 @@ class DeleteMemberFromTeam(LoginRequiredMixin, View):
         return render(
             request,
             self.template_name,
-            {
-                "team": team,
-                "member_to_delete": member_to_delete,
-                "error": error
-            },
+            {"team": team, "member_to_delete": member_to_delete, "error": error},
         )
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         team = get_object_or_404(Team, pk=kwargs["team_pk"])
-        if not team.members.filter(id=request.user.id).exists():
-            return HttpResponseForbidden("You are not allowed to modify this project.")
         member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
         if member_to_delete == request.user:
             return self.get(
@@ -394,8 +362,7 @@ class DeleteProjectView(generic.DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         project = get_object_or_404(
-            Project.objects.prefetch_related("team__members"),
-            pk=kwargs.get("pk")
+            Project.objects.prefetch_related("team__members"), pk=kwargs.get("pk")
         )
         if not project.team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -412,10 +379,7 @@ class DeleteProjectView(generic.DeleteView):
 @login_required
 def project_details_page_view(request, pk: int) -> HttpResponse:
     project = (
-        Project.objects
-        .select_related("team")
-        .prefetch_related("tasks")
-        .get(pk=pk)
+        Project.objects.select_related("team").prefetch_related("tasks").get(pk=pk)
     )
     project_tasks = project.tasks.all()
     page_obj = pagination(request, project_tasks, 8)
@@ -433,8 +397,7 @@ class DeleteTaskView(LoginRequiredMixin, generic.DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         task = get_object_or_404(
-            Task.objects.prefetch_related("project"),
-            pk=kwargs.get("pk")
+            Task.objects.prefetch_related("project"), pk=kwargs.get("pk")
         )
         if not task.project.team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -455,8 +418,7 @@ class UpdateProjectView(LoginRequiredMixin, generic.UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         project = get_object_or_404(
-            Project.objects.prefetch_related("team__members"),
-            pk=kwargs.get("pk")
+            Project.objects.prefetch_related("team__members"), pk=kwargs.get("pk")
         )
         if not project.team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -476,10 +438,7 @@ class UpdateProjectView(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "taskhub:project-details",
-            kwargs={"pk": self.object.pk}
-        )
+        return reverse_lazy("taskhub:project-details", kwargs={"pk": self.object.pk})
 
 
 class DeleteTeamView(LoginRequiredMixin, generic.DeleteView):
@@ -489,8 +448,7 @@ class DeleteTeamView(LoginRequiredMixin, generic.DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         team = get_object_or_404(
-            Team.objects.prefetch_related("members"),
-            pk=kwargs.get("pk")
+            Team.objects.prefetch_related("members"), pk=kwargs.get("pk")
         )
         if not team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -511,8 +469,7 @@ class UpdateTeamView(LoginRequiredMixin, generic.UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         team = get_object_or_404(
-            Team.objects.prefetch_related("members"),
-            pk=kwargs.get("pk")
+            Team.objects.prefetch_related("members"), pk=kwargs.get("pk")
         )
         if not team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -528,10 +485,7 @@ class UpdateTeamView(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "taskhub:team-details",
-            kwargs={"pk": self.object.pk}
-        )
+        return reverse_lazy("taskhub:team-details", kwargs={"pk": self.object.pk})
 
 
 class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
@@ -541,8 +495,7 @@ class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         task = get_object_or_404(
-            Task.objects.prefetch_related("project"),
-            pk=kwargs.get("pk")
+            Task.objects.prefetch_related("project"), pk=kwargs.get("pk")
         )
         if not task.project.team.members.filter(id=request.user.id).exists():
             return render(request, "permissions/permission.html")
@@ -564,9 +517,7 @@ class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "taskhub:task-details", kwargs={"pk": self.object.pk}
-        )
+        return reverse_lazy("taskhub:task-details", kwargs={"pk": self.object.pk})
 
 
 class DeleteCommentaryView(LoginRequiredMixin, generic.DeleteView):
