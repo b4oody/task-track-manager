@@ -9,7 +9,11 @@
   <main class="main">
     <!-- Кнопка "Назад" -->
     <div class="back-button-container">
-      <a href="{% url 'taskhub:teams' %}" class="back-button">Назад до списку команд</a>
+      <button
+          type="button"
+          onclick="window.history.back();"
+          style="float: right" class="btn-link">Назад
+      </button>
     </div>
 
     <section class="team-header">

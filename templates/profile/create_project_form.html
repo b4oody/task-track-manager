@@ -16,7 +16,7 @@
         {% csrf_token %}
         {{ form }}
         <button type="submit">Створити проєкт</button>
-        <a href="{{ referer }}" class="btn-link">Назад</a>
+        <button type="button" onclick="window.history.back();" class="btn">Назад</button>
       </form>
 
     </div>

@@ -16,9 +16,9 @@
       <form class="form" action="{% url 'taskhub:create-type' %}" method="post">
         {% csrf_token %}
         {{ form }}
-        <a href="{{ referer }}">Back</a>
         <input name="referer" type="hidden" value="{{ request.META.HTTP_REFERER }}">
         <button type="submit">Створити тип</button>
+        <button type="button" onclick="window.history.back();" class="btn">Назад</button>
 
       </form>
     </div>

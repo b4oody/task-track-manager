@@ -6,7 +6,7 @@ from django.contrib.auth.forms import (
 )
 from django.core.exceptions import ValidationError
 
-from taskhub.mixins import clean_ids_field, clean_project_name
+from taskhub.utils import clean_ids_field, clean_project_name
 from taskhub.models import (
     Worker,
     Position,
@@ -193,7 +193,7 @@ class AddMemberForm(forms.ModelForm):
         worker_id = self.cleaned_data.get("worker_id")
         team = Team.objects.get(pk=self.team_id)
         if self.user and worker_id == self.user.id:
-            raise forms.ValidationError(f"You are already on the team.")
+            raise forms.ValidationError("You are already on the team.")
         if not worker_id:
             raise forms.ValidationError(
                 "Worker ID cannot be empty. Please enter a valid ID."

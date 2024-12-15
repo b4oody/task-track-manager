@@ -17,7 +17,7 @@
         {{ form }}
         <input name="referer" type="hidden" value="{{ request.META.HTTP_REFERER }}">
         <button type="submit">Добавити</button>
-        <a href="{{ referer }}" class="btn-link">Назад</a>
+        <button type="button" onclick="window.history.back();" class="btn">Назад</button>
       </form>
 
     </div>

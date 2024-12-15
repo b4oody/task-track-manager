@@ -13,12 +13,14 @@ def clean_ids_field(self, field_name, model_class):
 
     if not data_ids:
         raise forms.ValidationError(
-            f"{field_name.replace('_', ' ').capitalize()} cannot be empty. Please enter valid IDs."
+            f"{field_name.replace('_', ' ').capitalize()} "
+            f"cannot be empty. Please enter valid IDs."
         )
     ids = [id.strip() for id in data_ids.split(",") if id.strip()]
     if not ids:
         raise forms.ValidationError(
-            f"{field_name.replace('_', ' ').capitalize()} cannot be empty. Please enter valid IDs."
+            f"{field_name.replace('_', ' ').capitalize()} "
+            f"cannot be empty. Please enter valid IDs."
         )
     try:
         ids = [int(id) for id in ids]
@@ -27,7 +29,8 @@ def clean_ids_field(self, field_name, model_class):
     objects = model_class.objects.filter(pk__in=ids)
     if len(objects) != len(ids):
         raise forms.ValidationError(
-            f"One or more {field_name.replace('_', ' ')} IDs are invalid. Please check the IDs."
+            f"One or more {field_name.replace('_', ' ')} "
+            f"IDs are invalid. Please check the IDs."
         )
     return objects
 

@@ -11,7 +11,11 @@
 
     <!-- Кнопка "Назад" -->
     <div class="back-button-container">
-      <a href="{{ referer }}" class="back-button">Назад до списку завдань</a>
+      <button
+          type="button"
+          onclick="window.history.back();"
+          style="float: right" class="btn-link">Назад
+      </button>
     </div>
 
     <!-- Інформація про завдання -->
