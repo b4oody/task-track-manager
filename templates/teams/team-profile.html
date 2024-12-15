@@ -19,7 +19,7 @@
     <section class="team-header">
       <a href="{% url 'taskhub:team-update' team.pk %}" class="btn-link">Редагувати</a>
       <h1>Команда: {{ team.name }}</h1>
-      <p>Опис команди: {{ team.description }}</p>
+      <p class="task-description"> Опис команди: {{ team.description }}</p>
       <!-- Кнопки для менеджерів -->
       <div class="manager-actions">
         <a href="{% url 'taskhub:add-member' team.pk %}" class="btn-link">Додати учасника</a>

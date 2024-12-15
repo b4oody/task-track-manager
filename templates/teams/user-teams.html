@@ -24,7 +24,7 @@
       {% for team in page_obj %}
         <div class="team-card">
           <h2><a href="{% url 'taskhub:team-details' team.pk %}">{{ team.name }}</a></h2>
-          <p>{{ team.description }}</p>
+          <p class="task-description">{{ team.description }}</p>
         </div>
       {% empty %}
         <h3 class="no-tasks">Поки немає команди, відпочивайте!</h3>

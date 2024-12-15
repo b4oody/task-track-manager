@@ -16,7 +16,7 @@
     <section class="project-header">
       <a href="{% url 'taskhub:project-update' project.pk %}" class="btn-link">Редагувати</a>
       <h1>Проєкт: {{ project.name }}</h1>
-      <p>Опис проєкту: {{ project.description }}</p>
+      <p class="task-description">Опис проєкту: {{ project.description }}</p>
       <p>Дедлайн: {{ project.deadline }}</p>
       <p>Статус: {{ project.status_display }}</p>
       <p>Команда:
