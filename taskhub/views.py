@@ -5,7 +5,7 @@ from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic, View
@@ -222,12 +222,12 @@ def create_team_form_view(request: HttpRequest) -> HttpResponse:
 @login_required
 def create_project_form_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CreateProjectForm(request.POST)
+        form = CreateProjectForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return redirect("taskhub:projects")
     else:
-        form = CreateProjectForm()
+        form = CreateProjectForm(user=request.user)
     return render(
         request,
         "profile/create_project_form.html",
@@ -320,11 +320,20 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
         kwargs["team"] = self.kwargs["pk"]
         return kwargs
 
+    def dispatch(self, request, *args, **kwargs):
+        team = get_object_or_404(
+            Team.objects.prefetch_related("members"),
+            pk=self.kwargs["pk"]
+        )
+        if not team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
+
     @transaction.atomic
     def form_valid(self, form):
+        team = get_object_or_404(Team, pk=self.kwargs["pk"])
         member_id = form.cleaned_data["worker_id"]
         new_member = get_object_or_404(Worker, id=member_id)
-        team = get_object_or_404(Team, pk=self.kwargs["pk"])
         if new_member not in team.members.all():
             team.members.add(new_member)
             team.save()
@@ -339,6 +348,12 @@ class AddNewMemberToTeam(LoginRequiredMixin, generic.FormView):
 
 class DeleteMemberFromTeam(LoginRequiredMixin, View):
     template_name = "forms/confirm_delete_member.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        team = get_object_or_404(Team.objects.prefetch_related("members"), pk=kwargs["team_pk"])
+        if not team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         team = get_object_or_404(Team, pk=kwargs["team_pk"])
@@ -357,6 +372,8 @@ class DeleteMemberFromTeam(LoginRequiredMixin, View):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         team = get_object_or_404(Team, pk=kwargs["team_pk"])
+        if not team.members.filter(id=request.user.id).exists():
+            return HttpResponseForbidden("You are not allowed to modify this project.")
         member_to_delete = get_object_or_404(Worker, id=kwargs["member_pk"])
         if member_to_delete == request.user:
             return self.get(
@@ -374,6 +391,15 @@ class DeleteProjectView(generic.DeleteView):
     model = Project
     template_name = "forms/confirm_delete_project.html"
     success_url = reverse_lazy("taskhub:projects")
+
+    def dispatch(self, request, *args, **kwargs):
+        project = get_object_or_404(
+            Project.objects.prefetch_related("team__members"),
+            pk=kwargs.get("pk")
+        )
+        if not project.team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
 
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
@@ -405,6 +431,15 @@ class DeleteTaskView(LoginRequiredMixin, generic.DeleteView):
     template_name = "forms/confirm_delete_task.html"
     success_url = reverse_lazy("taskhub:tasks")
 
+    def dispatch(self, request, *args, **kwargs):
+        task = get_object_or_404(
+            Task.objects.prefetch_related("project"),
+            pk=kwargs.get("pk")
+        )
+        if not task.project.team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
+
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
         """
@@ -417,6 +452,15 @@ class UpdateProjectView(LoginRequiredMixin, generic.UpdateView):
     model = Project
     form_class = UpdateProjectForm
     template_name = "projects/project-update.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        project = get_object_or_404(
+            Project.objects.prefetch_related("team__members"),
+            pk=kwargs.get("pk")
+        )
+        if not project.team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -443,6 +487,15 @@ class DeleteTeamView(LoginRequiredMixin, generic.DeleteView):
     template_name = "forms/confirm_delete_team.html"
     success_url = reverse_lazy("taskhub:teams")
 
+    def dispatch(self, request, *args, **kwargs):
+        team = get_object_or_404(
+            Team.objects.prefetch_related("members"),
+            pk=kwargs.get("pk")
+        )
+        if not team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
+
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
         """
@@ -455,6 +508,15 @@ class UpdateTeamView(LoginRequiredMixin, generic.UpdateView):
     model = Team
     form_class = UpdateTeamForm
     template_name = "teams/team-update.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        team = get_object_or_404(
+            Team.objects.prefetch_related("members"),
+            pk=kwargs.get("pk")
+        )
+        if not team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
 
     @transaction.atomic
     def form_valid(self, form):
@@ -477,10 +539,24 @@ class UpdateTaskView(LoginRequiredMixin, generic.UpdateView):
     form_class = UpdateTaskForm
     template_name = "tasks/task-update.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        task = get_object_or_404(
+            Task.objects.prefetch_related("project"),
+            pk=kwargs.get("pk")
+        )
+        if not task.project.team.members.filter(id=request.user.id).exists():
+            return render(request, "permissions/permission.html")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
     @transaction.atomic
     def form_valid(self, form):
         workers = form.cleaned_data["assignees_ids"]
-        project = form.cleaned_data["project_name"]
+        project = form.cleaned_data["project_choice"]
         task = self.object
         task.assignees.set(workers)
         task.project = project
