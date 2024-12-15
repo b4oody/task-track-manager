@@ -91,28 +91,29 @@ class CreateTeamForm(forms.ModelForm):
 
 
 class CreateProjectForm(forms.ModelForm):
-    team_name = forms.CharField(
-        label="Team name",
-        widget=forms.TextInput(attrs={"placeholder": "Text team name"}),
+    teams_choice = forms.ModelChoiceField(
+        queryset=Team.objects.none(),
+        label="Teams"
     )
 
     class Meta:
         model = Project
-        fields = ["name", "description", "deadline", "is_completed", "team_name"]
+        fields = [
+            "name",
+            "description",
+            "deadline",
+            "is_completed",
+            "teams_choice"
+            ]
 
-    def clean_team_name(self):
-        team_name = self.cleaned_data.get("team_name")
-        if not team_name:
-            raise forms.ValidationError(
-                "Team name cannot be empty. Please enter a valid name."
-            )
-        if not Team.objects.filter(name=team_name).exists():
-            raise forms.ValidationError(f"Team with name '{team_name}' does not exist.")
-        return team_name
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+        self.fields["teams_choice"].queryset = Team.objects.filter(members=self.user)
 
     def save(self, commit=True):
         project = super().save(commit=False)
-        team_name = self.cleaned_data["team_name"]
+        team_name = self.cleaned_data["teams_choice"]
         project.team = Team.objects.get(name=team_name)
         if commit:
             project.save()
@@ -126,9 +127,9 @@ class CreateTasksForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
-    project_name = forms.CharField(
-        label="Project name",
-        widget=forms.TextInput(attrs={"placeholder": "Text project name"}),
+    project_choice = forms.ModelChoiceField(
+        queryset=Team.objects.none(),
+        label="Teams"
     )
 
     class Meta:
@@ -141,30 +142,25 @@ class CreateTasksForm(forms.ModelForm):
             "priority",
             "task_type",
             "assignees_ids",
-            "project_name",
+            "project_choice",
         ]
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
-
+        project_queryset = Project.objects.filter(team__members=self.user)
+        self.fields["project_choice"].queryset = project_queryset
         if not self.instance.pk:
             self.fields["assignees_ids"].initial = str(self.user.id)
 
     def clean_assignees_ids(self):
         return clean_ids_field(self, "assignees_ids", Worker)
 
-    def clean_project_name(self):
-        return clean_project_name(self, "project_name", Project)
-
     def save(self, commit=True):
         task = super().save(commit=False)
-
         assignees = self.cleaned_data.get("assignees_ids")
-        project = self.cleaned_data.get("project_name")
-
+        project = self.cleaned_data.get("project_choice")
         task.project = project
-
         if commit:
             task.save()
             task.assignees.set(assignees)
@@ -236,9 +232,9 @@ class UpdateTaskForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "e.g., 1, 2, 3"}),
     )
 
-    project_name = forms.CharField(
-        label="Project name",
-        widget=forms.TextInput(attrs={"placeholder": "Text project name"}),
+    project_choice = forms.ModelChoiceField(
+        queryset=Team.objects.none(),
+        label="Project"
     )
 
     class Meta:
@@ -251,11 +247,14 @@ class UpdateTaskForm(forms.ModelForm):
             "priority",
             "task_type",
             "assignees_ids",
-            "project_name",
+            "project_choice",
         ]
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
+        project_queryset = Project.objects.filter(team__members=self.user)
+        self.fields["project_choice"].queryset = project_queryset
 
         if self.instance and self.instance.pk:
             assignees = self.instance.assignees.all()
@@ -263,14 +262,8 @@ class UpdateTaskForm(forms.ModelForm):
                 str(worker.id) for worker in assignees
             )
 
-            project = self.instance.project
-            self.fields["project_name"].initial = project.name if project else ""
-
     def clean_assignees_ids(self):
         return clean_ids_field(self, "assignees_ids", Worker)
-
-    def clean_project_name(self):
-        return clean_project_name(self, "project_name", Project)
 
 
 class UpdateProjectForm(forms.ModelForm):
