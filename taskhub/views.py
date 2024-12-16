@@ -560,6 +560,7 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
     template_name = "profile/update-profile.html"
     fields = ["username", "email", "first_name", "last_name", "position"]
+    success_url = reverse_lazy("taskhub:profile")
 
     def get_queryset(self):
         return Worker.objects.select_related("position").filter(pk=self.request.user.pk)
