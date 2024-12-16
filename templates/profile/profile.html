@@ -24,6 +24,7 @@
     <!-- Профіль користувача -->
     <section id="user-profile">
       <h2>Профіль користувача</h2>
+      <a href="{% url 'taskhub:profile-update' worker.pk %}" class="btn-link">Редагувати профіль</a>
       <div class="profile-info">
         <h3><strong>ID:{{ worker.pk }}</strong></h3>
         {% if worker.username %}

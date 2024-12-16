@@ -554,3 +554,12 @@ class PasswordResetEmailFormView(PasswordResetView):
     @transaction.atomic
     def form_valid(self, form):
         return super().form_valid(form)
+
+
+class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Worker
+    template_name = "profile/update-profile.html"
+    fields = ["username", "email", "first_name", "last_name", "position"]
+
+    def get_queryset(self):
+        return Worker.objects.select_related("position").filter(pk=self.request.user.pk)

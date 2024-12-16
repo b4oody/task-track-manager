@@ -30,12 +30,13 @@ from taskhub.views import (
     UpdateTaskView,
     DeleteCommentaryView,
     WorkerPasswordChange,
-    PasswordResetEmailFormView,
+    PasswordResetEmailFormView, ProfileUpdateView,
 )
 
 urlpatterns = [
     path("", get_index_page, name="index"),
     path("profile/", get_profile, name="profile"),
+    path("profile/update/<int:pk>/", ProfileUpdateView.as_view(), name="profile-update"),
     path("register/", sign_up, name="register"),
     path("password-change/", WorkerPasswordChange.as_view(), name="password_change"),
     path(
