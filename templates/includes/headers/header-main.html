@@ -1,0 +1,23 @@
+{% load static %}
+
+{% block header %}
+  <!-- Header -->
+  <header>
+    <img src="{% static "img/logo.png" %}" alt="Logo" class="logo">
+    <nav class="navigation">
+      <ul>
+        <li><a href="{% url "taskhub:index" %}">Головна</a></li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url "taskhub:profile" %}">{{ user.username }}</a></li>
+          <li><a href="{% url 'taskhub:teams' %}">Команди</a></li>
+          <li><a href="{% url 'taskhub:projects' %}">Проекти</a></li>
+          <li><a href="{% url 'taskhub:tasks' %}">Завдання</a></li>
+        {% else %}
+          <li><a href="{% url "taskhub:profile" %}">Мій кабінет</a></li>
+          <li><a href="{% url "login" %}">Login in</a></li>
+          <li><a href="{% url "taskhub:register" %}">Sign up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Завдання</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main">
+    <!-- Кнопка "Назад" -->
+    <div class="back-button-container">
+      <a href="{% url 'taskhub:profile' %}" class="back-button">Назад до профілю</a>
+    </div>
+
+
+    <section class="tasks-controls">
+      <h1>Завдання</h1>
+      <!-- Фільтри -->
+      <form action="{% url 'taskhub:tasks' %}" method="get">
+        <select name="status" onchange="this.form.submit()">
+          {% for status_value, status_label in form.fields.status.choices %}
+            <option value="{{ status_value }}"
+                    {% if request.GET.status == status_value %}selected{% endif %}>{{ status_label }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="priority" onchange="this.form.submit()">
+          {% for priority_value, priority_label in form.fields.priority.choices %}
+            <option value="{{ priority_value }}"
+                    {% if request.GET.priority == priority_value %}selected{% endif %}>{{ priority_label }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="team" onchange="this.form.submit()">
+    {% for team_id, team_name in form.fields.team.choices %}
+        <option value="{{ team_id }}"
+                {% if request.GET.team == team_id|stringformat:"s" %}selected{% endif %}>
+            {{ team_name }}
+        </option>
+    {% endfor %}
+</select>
+      </form>
+    </section>
+
+    <!-- Список завдань -->
+    <section class="tasks-list">
+      <div class="manager-actions">
+        <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити завдання</a>
+      </div>
+      {% for task in page_obj %}
+        <div class="task-card">
+          <h2><a href="{% url 'taskhub:task-details' task.pk %}">{{ task.name }}</a></h2>
+          <p><strong>Статус:</strong>{{ task.status_display }}</p>
+          <p><strong>Пріоритет:</strong>{{ task.priority }}</p>
+          <p><strong>Deadline:</strong>{{ task.deadline }}</p>
+          <p><strong>Команда:</strong>{{ task.project.team.name }}</p>
+        </div>
+      {% endfor %}
+
+    </section>
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
+  </main>
+{% endblock %}

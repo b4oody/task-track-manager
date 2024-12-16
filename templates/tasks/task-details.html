@@ -1,0 +1,75 @@
+{% extends "base/base.html" %}
+
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+
+{% endblock %}
+
+{% block content %}
+  <main class="main">
+
+    <!-- Кнопка "Назад" -->
+    <div class="back-button-container">
+      <button
+          type="button"
+          onclick="window.history.back();"
+          style="float: right" class="btn-link">Назад
+      </button>
+    </div>
+
+    <!-- Інформація про завдання -->
+    <section class="task-details">
+      <a href="{% url 'taskhub:task-update' task.pk %}" class="btn-link">Редагувати завдання</a>
+      <h1>{{ task.name }}::{{ task.task_type.name }}</h1>
+      <p>{{ task.created_at }}</p>
+      <br>
+      <p><strong>Статус:</strong> {{ task.status_display }}</p>
+      <p><strong>Пріоритет:</strong> {{ task.priority }}</p>
+      <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
+      <p><strong>Команда:</strong>
+        <a href="{% url 'taskhub:team-details' task.project.team.pk %}"> {{ task.project.team.name }}</a>
+      </p>
+      <p><strong>Проєкт:</strong>
+        <a href="{% url 'taskhub:project-details' task.project.pk %}"> {{ task.project.name }}</a>
+      </p>
+      <p><strong>Виконавці завдання:</strong> {{ task.assignees.all|join:", " }}</p>
+      <br>
+      <p class="task-description"><strong>Опис:</strong> {{ task.description }}</p>
+
+      <a href="{% url 'taskhub:task-delete' task.pk %}" class="btn-link">Видалити завдання</a>
+      <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити нове завдання</a>
+    </section>
+
+    <!-- Коментарі -->
+    <section class="task-comments">
+      <h2>Коментарі</h2>
+
+      <!-- Список коментарів -->
+      <div class="comment-box">
+        {% if task.commentaries.exists %}
+          {% for commentary in task.commentaries.all %}
+            <div class="comment">
+              <p><strong>{{ commentary.worker.username }}</strong></p>
+              <form style="float: right" action="{% url 'taskhub:commentary-delete' commentary.pk %}" method="post">
+                {% csrf_token %}
+                <button value="submit">Delete</button>
+              </form>
+              <p class="task-description">{{ commentary.commentary_content }}</p>
+              <span class="comment-meta">{{ commentary.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>Поки немає коментарів. Будьте першим!</p>
+        {% endif %}
+      </div>
+
+      <!-- Форма для написання коментаря -->
+      <form class="comment-form" action="{% url 'taskhub:task-details' task.pk %}" method="post">
+        {% csrf_token %}
+        <textarea name="commentary_content" placeholder="Напишіть свій коментар..." required></textarea>
+        <button type="submit" class="submit-btn">Додати коментар</button>
+      </form>
+    </section>
+  </main>
+{% endblock %}

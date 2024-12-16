@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Створення типу</title>
+{% endblock %}
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main-index">
+    <div class="content" style="width: 100%; max-width: 500px;">
+      <h1>Створення типу завдання</h1>
+      <form class="form" action="{% url 'taskhub:create-type' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input name="referer" type="hidden" value="{{ request.META.HTTP_REFERER }}">
+        <button type="submit">Створити тип</button>
+        <button type="button" onclick="window.history.back();" class="btn">Назад</button>
+
+      </form>
+    </div>
+  </main>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% block title %}
+  <title>Перелік команд</title>
+{% endblock %}
+
+
+{% block header %}
+  {% include "includes/headers/header-main.html" %}
+{% endblock %}
+
+{% block content %}
+  <main class="main">
+    <!-- Кнопка "Назад" -->
+    <div class="back-button-container">
+      <a href="{% url 'taskhub:profile' %}" class="back-button">Назад до профілю</a>
+    </div>
+
+    <h1>Мої команди</h1>
+    <div class="manager-actions">
+      <a href="{% url 'taskhub:create-team' %}" class="btn-link">Створити команду</a>
+    </div>
+    <section class="teams-list">
+
+      {% for team in page_obj %}
+        <div class="team-card">
+          <h2><a href="{% url 'taskhub:team-details' team.pk %}">{{ team.name }}</a></h2>
+          <p class="task-description">{{ team.description }}</p>
+        </div>
+      {% empty %}
+        <h3 class="no-tasks">Поки немає команди, відпочивайте!</h3>
+      {% endfor %}
+
+    </section>
+
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
+  </main>
+{% endblock %}

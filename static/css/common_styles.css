@@ -1,0 +1,667 @@
+/* Загальні скидання */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Основні стилі для тіла сторінки та типографії */
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    line-height: 1.6;
+    color: #4a1c1c; /* Темно-бордовий для тексту */
+    /* Зміщуємо фон трохи вниз */
+    background: url("/static/img/background-main.jpg");
+    background-size: cover;
+}
+
+/* Стиль для заголовка (auth-header) */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #4a1c1c;
+}
+
+header .logo {
+    height: 80px;
+    border-radius: 40px;
+}
+
+header .navigation ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header .navigation ul li a {
+    color: #4a1c1c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header .navigation ul li a:hover {
+    color: #b23b3b; /* Темний червоний для наведення */
+}
+
+/* Фонова картинка для основного контенту (main) */
+main {
+    min-height: calc(100vh - 60px); /* 60px — висота футера, налаштуйте за потреби */
+    border: 2px solid #ffc4c4; /* Світло-рожева рамка */
+    background-color: rgba(255, 240, 230, 0.85); /* Теплий кремовий з м'якою прозорістю */
+    padding: 20px 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-size: cover;
+    background-attachment: fixed;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+
+}
+
+.main-index{
+    display: flex;
+    justify-content: center; /* Центрує по горизонталі */
+    align-items: center;     /* Центрує по вертикалі */
+}
+/* Центрування контенту у #intro */
+#intro {
+    text-align: center; /* Центрує текст всередині */
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+#intro h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #4a1c1c;
+}
+
+#intro p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #4a1c1c;
+}
+
+#intro button {
+    background-color: #b23b3b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+#intro button:hover {
+    background-color: #8e2828;
+}
+/* Напівпрозорий фон для тексту */
+main .content {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Стиль для футера (footer) */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #4a1c1c;
+    font-size: 14px;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Основний стиль для кнопок */
+button {
+    background-color: #b23b3b; /* Основний насичений червоний */
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #8e2828; /* Темніший для наведення */
+}
+
+
+/* Стиль для посилань у вигляді кнопок */
+a.btn-link {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none; /* Забираємо підкреслення */
+    color: #fff; /* Білий текст */
+    background-color: #b23b3b; /* Основний червоний */
+    border-radius: 5px; /* Заокруглені кути */
+    transition: background-color 0.3s ease; /* Плавний перехід кольору */
+    cursor: pointer;
+}
+
+a.btn-link:hover {
+    background-color: #e36f6f;
+    text-decoration: none;
+    color: #fff;
+}
+
+
+/* Стиль для посилань */
+a, .task-card h2 a, .project-card h2 a, .team-card h2 a {
+    color: #b23b3b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover, .task-card h2 a:hover, .project-card h2 a:hover, .team-card h2 a:hover {
+    color: #8e2828;
+    text-decoration: underline;
+}
+
+/* Стиль для кнопок "Назад" */
+.back-button {
+    background-color: #d3a6a6; /* Світлий відтінок червоного */
+    color: #4a1c1c;
+    padding: 6px 12px;
+    font-size: 14px;
+    float: right;
+    right: 20px;
+    top: 20px;
+}
+
+.back-button:hover {
+    background-color: #b08585; /* Темніший відтінок для наведення */
+}
+
+/* Специфічні стилі для кнопок "Редагувати" та "Архівувати" */
+.edit-btn {
+    background-color: #f29e9e; /* Світло-рожевий для кнопки "Редагувати" */
+    color: #4a1c1c;
+}
+
+.edit-btn:hover {
+    background-color: #e08787;
+}
+
+.archive-btn {
+    background-color: #a63e3e; /* Насичений темно-червоний для "Архівувати" */
+    color: #fff;
+}
+
+.archive-btn:hover {
+    background-color: #7a2e2e;
+}
+
+/* Стиль для карток завдань, проектів, команд */
+.task-card, .project-card, .team-card {
+    background-color: rgba(255, 240, 240, 0.9);
+    border: 2px solid #ffc4c4;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: transform 0.2s;
+}
+
+.task-card:hover, .project-card:hover, .team-card:hover {
+    transform: translateY(-3px);
+    border-color: #b23b3b;
+}
+
+/* Оформлення статистики в профілі користувача */
+.summary-info {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.summary-item {
+    background-color: rgba(255, 235, 235, 0.95);
+    border: 2px solid #ffc4c4;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    transition: transform 0.2s;
+}
+
+.summary-item h3 {
+    color: #b23b3b;
+    margin-bottom: 10px;
+}
+
+.summary-item p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a1c1c;
+}
+
+.summary-item:hover {
+    transform: translateY(-5px);
+    border-color: #b23b3b;
+}
+
+/* Сітка для карток учасників */
+.member-grid, .member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Загальні стилі для фільтрів та форм */
+select, input[type="file"], textarea {
+    border: 1px solid #b23b3b;
+    border-radius: 5px;
+    padding: 8px;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #4a1c1c;
+}
+
+/* Адаптивний дизайн */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
+    header .navigation ul {
+        flex-direction: column;
+    }
+
+    .summary-info {
+        flex-direction: column;
+    }
+
+    .back-button {
+        position: static;
+        margin: 10px 0;
+    }
+}
+
+/* Загальний стиль для контейнера форми */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Стиль для полів вводу */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    border: 1px solid #b23b3b;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #4a1c1c;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: #8e2828; /* Темно-червоний для фокусу */
+}
+
+/* Стиль для кнопок у формі */
+.form button {
+    background-color: #b23b3b; /* Основний червоний */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background-color: #8e2828; /* Темніший відтінок для наведення */
+}
+
+.errors{
+    color: red;
+}
+
+/* Стиль для посилань внизу форми */
+form p {
+    text-align: center;
+    font-size: 0.9em;
+    color: #4a1c1c;
+}
+
+form p a {
+    color: #b23b3b;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+form p a:hover {
+    color: #8e2828; /* Темний червоний для наведення */
+}
+
+/* Стиль для підписів (label) */
+form label {
+    font-size: 1em;
+    color: #4a1c1c;
+    font-weight: bold;
+}
+
+/* Відступи всередині контейнера форми */
+form > *:not(button) {
+    margin-bottom: 10px;
+}
+
+
+
+/* Загальний стиль для полів вводу */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #b23b3b;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #4a1c1c;
+    background-color: #fff;
+}
+
+/* Стиль для списку вибору datalist */
+datalist option {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 1em;
+    color: #4a1c1c;
+}
+
+/* При фокусі змінюється колір рамки */
+.form-input:focus {
+    border-color: #8e2828;
+    outline: none;
+}
+
+/* Оформлення для лейблів */
+form label {
+    font-weight: bold;
+    color: #4a1c1c;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.errorlist {
+    color: red;
+    list-style: none;
+    font-weight: bold;
+
+}
+
+
+/* Стилі для коментарів */
+.comment-box {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comment {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ffc4c4;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.comment p {
+    margin-bottom: 5px;
+}
+
+.comment strong {
+    font-weight: bold;
+    color: #4a1c1c;
+}
+
+.comment-meta {
+    font-size: 0.85em;
+    color: #8e2828;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Стиль для форми коментаря */
+.comment-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #b23b3b;
+    border-radius: 5px;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #4a1c1c;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.comment-form textarea:focus {
+    border-color: #8e2828;
+    outline: none;
+}
+
+.submit-btn {
+    align-self: flex-end;
+    background-color: #b23b3b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #8e2828;
+}
+
+
+/* Опис завдання */
+.task-description {
+    font-size: 1em;
+    color: #4a1c1c;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Стиль для тексту "Поки немає завдань" */
+.no-tasks {
+    color: red;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+/* Загальний контейнер пагінації */
+.pagination {
+    display: flex;
+    justify-content: center; /* Центруємо пагінацію */
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0; /* Відступи зверху та знизу */
+    padding: 10px;
+    background-color: rgba(255, 240, 240, 0.9); /* Світлий рожевий фон */
+    border: 1px solid #ffc4c4; /* Світло-рожева рамка */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Стиль для посилань пагінації */
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #b23b3b; /* Основний червоний колір тексту */
+    background-color: rgba(255, 255, 255, 0.9); /* Напівпрозорий білий фон */
+    text-decoration: none;
+    border: 1px solid #ffc4c4;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Ефект наведення на посилання */
+.pagination a:hover {
+    background-color: #b23b3b; /* Червоний фон */
+    color: #fff; /* Білий текст */
+    border-color: #8e2828; /* Темно-червона рамка */
+}
+
+/* Стиль для тексту поточної сторінки */
+.pagination .current {
+    font-size: 14px;
+    font-weight: bold;
+    color: #4a1c1c; /* Темно-бордовий текст */
+    padding: 8px 12px;
+    background-color: rgba(255, 255, 255, 0.9); /* Напівпрозорий білий фон */
+    border: 1px solid #ffc4c4;
+    border-radius: 5px;
+}
+
+/* Адаптивність для маленьких екранів */
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap; /* Переносимо елементи на новий рядок */
+        gap: 5px;
+    }
+
+    .pagination a, .pagination .current {
+        font-size: 12px; /* Зменшуємо розмір шрифту */
+        padding: 6px 10px; /* Зменшуємо відступи */
+    }
+}
+
+
+
+/* Сітка для учасників */
+.team-members .member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Максимум 5 карток на рядок, з автоматичним розподілом */
+    gap: 20px; /* Відстань між картками */
+    margin-top: 20px;
+}
+
+/* Картки учасників */
+.member-card {
+    background-color: rgba(255, 235, 235, 0.95);
+    border: 2px solid #ffc4c4;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    word-wrap: break-word; /* Дозволяє переносити довгі слова */
+    overflow-wrap: break-word; /* Забезпечує правильний перехід для довгих слів */
+    hyphens: auto; /* Автоматичне додавання переносів для довгих слів */
+}
+
+.member-card h3 {
+    color: #b23b3b;
+    margin-bottom: 10px;
+}
+
+.member-card p {
+    color: #4a1c1c;
+    font-size: 14px;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: #b23b3b;
+}
+
+
+/* Сітка для проектів */
+.team-projects .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Задаємо мінімальний розмір для карток проектів */
+    gap: 20px; /* Відстань між картками */
+    margin-top: 20px;
+}
+
+/* Картки проектів */
+.project-item {
+     background-color: rgba(255, 240, 240, 0.95);
+    border: 2px solid #ffc4c4;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    word-wrap: break-word; /* Дозволяє переносити довгі слова */
+    overflow-wrap: break-word; /* Забезпечує правильний перехід для довгих слів */
+    hyphens: auto; /* Автоматичне додавання переносів для довгих слів */
+}
+
+.project-item h3 {
+    color: #b23b3b;
+    margin-bottom: 10px;
+}
+
+.project-item p {
+    color: #4a1c1c;
+    font-size: 14px;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: #b23b3b;
+}
+
+
+@media (max-width: 768px) {
+    .team-members .member-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2-3 картки на малих екранах */
+    }
+
+    .team-projects .project-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Картки проектів для менших екранів */
+    }
+}

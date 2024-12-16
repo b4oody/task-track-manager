@@ -1,0 +1,94 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+  <title>Кабінет користувача</title>
+{% endblock %}
+
+
+{% block header %}
+  {% include 'includes/headers/header-main.html' %}
+{% endblock %}
+
+{% block content %}
+  <main>
+    <!-- Кнопка "Logout" -->
+    <div style="float: right" class="back-button-container">
+      <a href="{% url 'taskhub:password_change' %}" class="btn-link">Змінити пароль</a>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="create-project-btn" type="submit">Logout</button>
+      </form>
+    </div>
+
+
+    <!-- Профіль користувача -->
+    <section id="user-profile">
+      <h2>Профіль користувача</h2>
+      <a href="{% url 'taskhub:profile-update' worker.pk %}" class="btn-link">Редагувати профіль</a>
+      <div class="profile-info">
+        <h3><strong>ID:{{ worker.pk }}</strong></h3>
+        {% if worker.username %}
+          <p><strong>Нікнейм:</strong> {{ worker.username }}</p>
+        {% endif %}
+        {% if worker.first_name %}
+          <p><strong>Ім’я:</strong> {{ worker.first_name }}</p>
+        {% endif %}
+        {% if worker.position %}
+          <p><strong>Посада:</strong> {{ worker.position }}</p>
+        {% endif %}
+        {% if worker.email %}
+          <p><strong>Контакт:</strong> {{ worker.email }}</p>
+        {% endif %}
+      </div>
+      <div class="user-actions">
+        <a href="{% url 'taskhub:create-team' %}" class="btn-link">Створити нову команду</a>
+        <a href="{% url 'taskhub:create-project' %}" class="btn-link">Створити новий проект</a>
+        <a href="{% url 'taskhub:create-task' %}" class="btn-link">Створити нове завдання</a>
+      </div>
+    </section>
+
+    <!-- Панель зведеної інформації -->
+    <section id="summary-panel">
+      <h2>Статистика продуктивності</h2>
+      <div class="summary-info">
+        <div class="summary-item">
+          <h3>Активні завдання</h3>
+          <p>{{ active_tasks }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Активні проєкти</h3>
+          <p>{{ active_projects }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Завершені проекти</h3>
+          <p>{{ finished_projects }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Виконані завдання</h3>
+          <p>{{ finished_tasks }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Огляд завдань -->
+    <section id="tasks-overview">
+      <h2>Мої завдання</h2>
+      <div class="task-container">
+        {% for task in page_obj %}
+          <div class="task-card">
+            <a href="{% url 'taskhub:task-details' task.pk %}" class="task-name">{{ task.name }}</a>
+            <span class="task-meta">{{ task.created_at|date:"d M, Y, H:i" }}</span>
+            <p><strong>Deadline:</strong> {{ task.deadline|date:"d M, Y" }}</p>
+            <p class="task-description">{{ task.description }}</p>
+          </div>
+        {% empty %}
+          <h3 class="no-tasks">Поки немає завдань, відпочивайте!</h3>
+        {% endfor %}
+      </div>
+    </section>
+
+    {% block pagination %}
+      {% include "includes/pagination/pagination.html" %}
+    {% endblock %}
+  </main>
+{% endblock %}
