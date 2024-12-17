@@ -1,0 +1,397 @@
+{
+  "positions": [
+    {"id": 1, "name": "Developer"},
+    {"id": 2, "name": "Project Manager"}
+  ],
+  "task_types": [
+    {"id": 1, "name": "Development"},
+    {"id": 2, "name": "Testing"}
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "john_doe",
+      "password": "hashed_password",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "position_id": 1
+    },
+    {
+      "id": 2,
+      "username": "jane_smith",
+      "password": "hashed_password",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "email": "jane.smith@example.com",
+      "position_id": 2
+    },
+    {
+      "id": 3,
+      "username": "michael_brown",
+      "password": "hashed_password",
+      "first_name": "Michael",
+      "last_name": "Brown",
+      "email": "michael.brown@example.com",
+      "position_id": 1
+    },
+    {
+      "id": 4,
+      "username": "emily_davis",
+      "password": "hashed_password",
+      "first_name": "Emily",
+      "last_name": "Davis",
+      "email": "emily.davis@example.com",
+      "position_id": 2
+    },
+    {
+      "id": 5,
+      "username": "daniel_wilson",
+      "password": "hashed_password",
+      "first_name": "Daniel",
+      "last_name": "Wilson",
+      "email": "daniel.wilson@example.com",
+      "position_id": 1
+    },
+    {
+      "id": 6,
+      "username": "sarah_moore",
+      "password": "hashed_password",
+      "first_name": "Sarah",
+      "last_name": "Moore",
+      "email": "sarah.moore@example.com",
+      "position_id": 2
+    },
+    {
+      "id": 7,
+      "username": "chris_taylor",
+      "password": "hashed_password",
+      "first_name": "Chris",
+      "last_name": "Taylor",
+      "email": "chris.taylor@example.com",
+      "position_id": 1
+    },
+    {
+      "id": 8,
+      "username": "anna_thomas",
+      "password": "hashed_password",
+      "first_name": "Anna",
+      "last_name": "Thomas",
+      "email": "anna.thomas@example.com",
+      "position_id": 2
+    },
+    {
+      "id": 9,
+      "username": "robert_jackson",
+      "password": "hashed_password",
+      "first_name": "Robert",
+      "last_name": "Jackson",
+      "email": "robert.jackson@example.com",
+      "position_id": 1
+    },
+    {
+      "id": 10,
+      "username": "linda_white",
+      "password": "hashed_password",
+      "first_name": "Linda",
+      "last_name": "White",
+      "email": "linda.white@example.com",
+      "position_id": 2
+    }
+  ],
+  "teams": [
+    {
+      "id": 1,
+      "name": "Team Alpha",
+      "description": "Developing the core features of our flagship product, focusing on scalable and maintainable architecture.",
+      "members": [1, 2, 3, 4]
+    },
+    {
+      "id": 2,
+      "name": "Team Beta",
+      "description": "Responsible for testing, quality assurance, and delivering robust software updates.",
+      "members": [5, 6, 7, 8]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Project Apollo",
+      "description": "An innovative project aimed at creating next-generation space exploration software with advanced simulation capabilities.",
+      "deadline": "2025-06-30",
+      "is_completed": false,
+      "team_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Project Hermes",
+      "description": "A logistics optimization platform designed to streamline supply chain processes with AI-driven insights.",
+      "deadline": "2025-03-15",
+      "is_completed": false,
+      "team_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Project Athena",
+      "description": "A comprehensive project aimed at improving internal communication tools for better collaboration.",
+      "deadline": "2025-09-01",
+      "is_completed": false,
+      "team_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Project Poseidon",
+      "description": "Development of an AI-driven marine navigation system for optimal route planning.",
+      "deadline": "2025-12-15",
+      "is_completed": false,
+      "team_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Implement Login Feature",
+      "description": "Develop and integrate a secure and user-friendly login functionality, including password recovery and social login options.",
+      "deadline": "2025-02-10",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 1,
+      "assignees": [1],
+      "project_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Test Payment Gateway",
+      "description": "Run comprehensive tests for the payment gateway integration, ensuring compatibility with multiple currencies and platforms.",
+      "deadline": "2025-01-20",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 2,
+      "assignees": [2],
+      "project_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Design Dashboard UI",
+      "description": "Create a user-centric dashboard UI for better analytics visualization, ensuring responsiveness and accessibility.",
+      "deadline": "2025-04-15",
+      "is_completed": false,
+      "priority": "urgent",
+      "task_type_id": 1,
+      "assignees": [3, 4],
+      "project_id": 3,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Optimize Database Queries",
+      "description": "Identify and optimize slow database queries to improve application performance under heavy load.",
+      "deadline": "2025-06-01",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 1,
+      "assignees": [5],
+      "project_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Conduct Load Testing",
+      "description": "Perform load testing to evaluate the system's performance under various conditions and prepare a detailed report.",
+      "deadline": "2025-05-10",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 2,
+      "assignees": [6],
+      "project_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 6,
+      "name": "Build API Endpoints",
+      "description": "Develop secure and efficient API endpoints for data synchronization across multiple platforms.",
+      "deadline": "2025-03-01",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 1,
+      "assignees": [7],
+      "project_id": 4,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 7,
+      "name": "Enhance Security Protocols",
+      "description": "Implement advanced security protocols to protect user data and prevent potential breaches.",
+      "deadline": "2025-08-01",
+      "is_completed": false,
+      "priority": "urgent",
+      "task_type_id": 1,
+      "assignees": [8],
+      "project_id": 3,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 8,
+      "name": "Refactor Backend Code",
+      "description": "Improve the maintainability of backend code by refactoring outdated modules.",
+      "deadline": "2025-05-15",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 1,
+      "assignees": [1],
+      "project_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 9,
+      "name": "Add Unit Tests",
+      "description": "Increase test coverage by adding unit tests for core functionalities.",
+      "deadline": "2025-04-10",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 2,
+      "assignees": [1],
+      "project_id": 3,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 10,
+      "name": "Optimize Frontend Performance",
+      "description": "Enhance frontend performance by optimizing resource loading and reducing payload size.",
+      "deadline": "2025-03-20",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 1,
+      "assignees": [1],
+      "project_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 11,
+      "name": "Implement Feature X",
+      "description": "Add new feature X based on user feedback and market trends.",
+      "deadline": "2025-06-10",
+      "is_completed": false,
+      "priority": "urgent",
+      "task_type_id": 1,
+      "assignees": [1],
+      "project_id": 4,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 12,
+      "name": "Update Documentation",
+      "description": "Revise and update project documentation to reflect recent changes.",
+      "deadline": "2025-07-01",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 2,
+      "assignees": [1],
+      "project_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 13,
+      "name": "Fix Critical Bug",
+      "description": "Resolve a critical bug reported by the QA team during integration testing.",
+      "deadline": "2025-02-28",
+      "is_completed": false,
+      "priority": "urgent",
+      "task_type_id": 2,
+      "assignees": [2],
+      "project_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 14,
+      "name": "Create Design Mockups",
+      "description": "Prepare initial design mockups for the client presentation.",
+      "deadline": "2025-05-05",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 1,
+      "assignees": [3],
+      "project_id": 3,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 15,
+      "name": "Integrate Third-Party API",
+      "description": "Integrate a third-party API to enhance application functionality.",
+      "deadline": "2025-04-25",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 1,
+      "assignees": [4],
+      "project_id": 4,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 16,
+      "name": "Run Security Audit",
+      "description": "Conduct a comprehensive security audit to identify vulnerabilities.",
+      "deadline": "2025-03-15",
+      "is_completed": false,
+      "priority": "urgent",
+      "task_type_id": 2,
+      "assignees": [5],
+      "project_id": 1,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 17,
+      "name": "Set Up CI/CD Pipeline",
+      "description": "Automate build and deployment processes by setting up a CI/CD pipeline.",
+      "deadline": "2025-06-20",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 1,
+      "assignees": [6],
+      "project_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 18,
+      "name": "Optimize Search Algorithm",
+      "description": "Improve the efficiency of the search algorithm for faster query responses.",
+      "deadline": "2025-05-30",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 1,
+      "assignees": [7],
+      "project_id": 4,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 19,
+      "name": "Prepare User Training",
+      "description": "Develop and deliver training materials for end-users.",
+      "deadline": "2025-07-15",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type_id": 2,
+      "assignees": [8],
+      "project_id": 3,
+      "created_at": "2024-12-16T00:00:00Z"
+    },
+    {
+      "id": 20,
+      "name": "Update Testing Framework",
+      "description": "Upgrade the existing testing framework to support new features.",
+      "deadline": "2025-04-18",
+      "is_completed": false,
+      "priority": "high",
+      "task_type_id": 2,
+      "assignees": [2],
+      "project_id": 2,
+      "created_at": "2024-12-16T00:00:00Z"
+    }
+  ],
+  "commentaries": []
+}
