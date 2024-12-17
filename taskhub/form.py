@@ -273,7 +273,7 @@ class StatusFilterForm(forms.Form):
 
 class TaskFilterForm(forms.Form):
     PRIORITY_CHOICES.insert(0, ("all", "Всі пріоритети"))
-    team_choices = [("all", "Всі команди")] + [
+    team_choices = lambda: [
         (team.id, team.name) for team in Team.objects.all()
     ]
 
