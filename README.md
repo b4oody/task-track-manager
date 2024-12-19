@@ -129,17 +129,7 @@ To run the project locally:
 7. **Open the application**:
    - The server will run at `http://127.0.0.1:8000`
 
-<<<<<<< HEAD
-=======
-## 🖥️ Deployment
 
-The project is deployed on **Render**. Pre-configured account for login:
-- 🔑 **Login**: `admin`
-- 🔒 **Password**: `Qw$rty123`
-
-Alternatively, you can **register a new account**.
-
->>>>>>> b2905b46184e3d06b5d1db54d31dfd75a380ae98
 ## 🧩 Project Structure
 
 ```
