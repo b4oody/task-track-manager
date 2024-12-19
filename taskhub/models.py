@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 
-from task_tracker_manager import settings
+from task_tracker_manager.settings.base import AUTH_USER_MODEL
 
 PRIORITY_CHOICES = [
     ("urgent", "Urgent"),
@@ -51,7 +51,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100, unique=True, db_index=True)
     description = models.TextField(blank=True)
     members = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        AUTH_USER_MODEL,
         related_name="teams",
         blank=True,
     )
@@ -112,7 +112,7 @@ class Task(models.Model):
         related_name="tasks",
     )
     assignees = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        AUTH_USER_MODEL,
         related_name="tasks",
     )
     project = models.ForeignKey(
@@ -145,7 +145,7 @@ class Task(models.Model):
 
 class Commentary(models.Model):
     worker = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="commentaries"
+        AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="commentaries"
     )
     task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name="commentaries"
