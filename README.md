@@ -2,8 +2,14 @@
 
 Task Manager is a simple web application for task management. The app allows users to create, edit, delete tasks, work with teams, projects, and organize workflows.
 
-## 🚀 Technologies
+# 🖥️ Check it out 
+   ```https://task-track-manager.onrender.com/```
 
+   ⚠️ Important Information
+      Please note that the website may experience downtime or instability due to issues with the hosting provider. 
+      We are working diligently to ensure stable operation and apologize for any inconvenience caused.
+
+## 🚀 Technologies
 The project is built using:
 - 🐍 **Backend**: Python + Django
 - 🗄️ **Database**: SQLite (local), PostgreSQL (server)
@@ -118,7 +124,7 @@ To run the project locally:
 
 The project is deployed on **Render**. Pre-configured account for login:
 - 🔑 **Login**: `admin`
-- 🔒 **Password**: `Qwerty12345`
+- 🔒 **Password**: `Qw$rty123`
 
 Alternatively, you can **register a new account**.
 
