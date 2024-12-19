@@ -77,10 +77,28 @@ To run the project locally:
 
 4. **Configure environment**: Create an `.env` file for configuration.
    ```bash
-   DATABASE_URL=your_postgresql_url
-   SMTP_EMAIL=your_email
-   SMTP_PASSWORD=your_password
+   # DB
+    POSTGRES_DB=<db_name>                     # Name of the Postgres database
+    POSTGRES_DB_PORT=<db_port>                # Port of the Postgres database
+    POSTGRES_USER=<db_user>                   # Postgres database username
+    POSTGRES_PASSWORD=<db_password>           # Postgres database password
+    POSTGRES_HOST=<db_host>                   # Host for the Postgres database
+    
+    # If you do not wish to use Postgres, you can skip these fields and the application will use SQLite by default.
+    
+    # Django
+    SECRET_KEY=<secret_key>                   # Mandatory: Secret key for Django
+    DJANGO_SETTINGS_MODULE=<project.settings.prod/dev>  # Mandatory: Specify production or development settings
+    RENDER_EXTERNAL_HOSTNAME=<domain>         # Optional: Domain name for external rendering
+    
+    # Django SMTP
+    EMAIL_HOST_USER_SMPT=<admin@gmail.com>    # Optional: SMTP email address for admin
+    EMAIL_HOST_PASSWORD_SMPT=<password>       # Optional: SMTP email password
    ```
+    **Note:**
+    - If POSTGRES_DB and related fields are not set, the project will fall back to using SQLite as the default database.
+    - If EMAIL_HOST_USER_SMPT and EMAIL_HOST_PASSWORD_SMPT are not set, the website will still work, but password reset functionality will be disabled.
+    - The SECRET_KEY and DJANGO_SETTINGS_MODULE are mandatory and must be provided for the application to run.
 
 5. **Load database data** (if needed):
    ```bash
