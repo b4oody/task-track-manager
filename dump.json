@@ -1,0 +1,637 @@
+[
+{
+    "model": "taskhub.tasktype",
+    "pk": 1,
+    "fields": {
+        "name": "Development"
+    }
+},
+{
+    "model": "taskhub.tasktype",
+    "pk": 2,
+    "fields": {
+        "name": "Testing"
+    }
+},
+{
+    "model": "taskhub.position",
+    "pk": 1,
+    "fields": {
+        "name": "Developer"
+    }
+},
+{
+    "model": "taskhub.position",
+    "pk": 2,
+    "fields": {
+        "name": "Project Manager"
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$ZZWxWk5aeYJi9e1WcsTlJH$e9MS8xzfP+m74OlMxZYTW905SfZwz/2TTV+wX2o0oF8=",
+        "last_login": "2024-12-18T20:11:09.453Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "admin",
+        "last_name": "admin",
+        "email": "vladrymarchuk@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-12-16T21:30:59.812Z",
+        "position": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 2,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "jane_smith",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane.smith@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.442Z",
+        "position": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 3,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "michael_brown",
+        "first_name": "Michael",
+        "last_name": "Brown",
+        "email": "michael.brown@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.443Z",
+        "position": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 4,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "emily_davis",
+        "first_name": "Emily",
+        "last_name": "Davis",
+        "email": "emily.davis@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.445Z",
+        "position": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 5,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "daniel_wilson",
+        "first_name": "Daniel",
+        "last_name": "Wilson",
+        "email": "daniel.wilson@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.447Z",
+        "position": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 6,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "sarah_moore",
+        "first_name": "Sarah",
+        "last_name": "Moore",
+        "email": "sarah.moore@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.448Z",
+        "position": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 7,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "chris_taylor",
+        "first_name": "Chris",
+        "last_name": "Taylor",
+        "email": "chris.taylor@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.450Z",
+        "position": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 8,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "anna_thomas",
+        "first_name": "Anna",
+        "last_name": "Thomas",
+        "email": "anna.thomas@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.451Z",
+        "position": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 9,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "robert_jackson",
+        "first_name": "Robert",
+        "last_name": "Jackson",
+        "email": "robert.jackson@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.453Z",
+        "position": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.worker",
+    "pk": 10,
+    "fields": {
+        "password": "hashed_password",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "linda_white",
+        "first_name": "Linda",
+        "last_name": "White",
+        "email": "linda.white@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-12-17T15:22:53.454Z",
+        "position": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "taskhub.team",
+    "pk": 1,
+    "fields": {
+        "name": "Team Alpha",
+        "description": "Developing the core features of our flagship product, focusing on scalable and maintainable architecture.",
+        "members": [
+            1,
+            2,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "taskhub.team",
+    "pk": 2,
+    "fields": {
+        "name": "Team Beta",
+        "description": "Responsible for testing, quality assurance, and delivering robust software updates.",
+        "members": [
+            5,
+            6,
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "taskhub.project",
+    "pk": 1,
+    "fields": {
+        "name": "Project Apollo",
+        "description": "An innovative project aimed at creating next-generation space exploration software with advanced simulation capabilities.",
+        "deadline": "2025-06-30",
+        "is_completed": false,
+        "team": 1,
+        "created_at": "2024-12-17T15:22:53.463Z"
+    }
+},
+{
+    "model": "taskhub.project",
+    "pk": 2,
+    "fields": {
+        "name": "Project Hermes",
+        "description": "A logistics optimization platform designed to streamline supply chain processes with AI-driven insights.",
+        "deadline": "2025-03-15",
+        "is_completed": false,
+        "team": 2,
+        "created_at": "2024-12-17T15:22:53.465Z"
+    }
+},
+{
+    "model": "taskhub.project",
+    "pk": 3,
+    "fields": {
+        "name": "Project Athena",
+        "description": "A comprehensive project aimed at improving internal communication tools for better collaboration.",
+        "deadline": "2025-09-01",
+        "is_completed": false,
+        "team": 1,
+        "created_at": "2024-12-17T15:22:53.467Z"
+    }
+},
+{
+    "model": "taskhub.project",
+    "pk": 4,
+    "fields": {
+        "name": "Project Poseidon",
+        "description": "Development of an AI-driven marine navigation system for optimal route planning.",
+        "deadline": "2025-12-15",
+        "is_completed": false,
+        "team": 2,
+        "created_at": "2024-12-17T15:22:53.469Z"
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 1,
+    "fields": {
+        "name": "Implement Login Feature",
+        "description": "Develop and integrate a secure and user-friendly login functionality, including password recovery and social login options.",
+        "deadline": "2025-02-10",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.471Z",
+        "priority": "high",
+        "task_type": 1,
+        "project": 1,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 2,
+    "fields": {
+        "name": "Test Payment Gateway",
+        "description": "Run comprehensive tests for the payment gateway integration, ensuring compatibility with multiple currencies and platforms.",
+        "deadline": "2025-01-20",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.475Z",
+        "priority": "medium",
+        "task_type": 2,
+        "project": 2,
+        "assignees": [
+            2
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 3,
+    "fields": {
+        "name": "Design Dashboard UI",
+        "description": "Create a user-centric dashboard UI for better analytics visualization, ensuring responsiveness and accessibility.",
+        "deadline": "2025-04-15",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.479Z",
+        "priority": "urgent",
+        "task_type": 1,
+        "project": 3,
+        "assignees": [
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 4,
+    "fields": {
+        "name": "Optimize Database Queries",
+        "description": "Identify and optimize slow database queries to improve application performance under heavy load.",
+        "deadline": "2025-06-01",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.483Z",
+        "priority": "high",
+        "task_type": 1,
+        "project": 1,
+        "assignees": [
+            5
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 5,
+    "fields": {
+        "name": "Conduct Load Testing",
+        "description": "Perform load testing to evaluate the system's performance under various conditions and prepare a detailed report.",
+        "deadline": "2025-05-10",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.487Z",
+        "priority": "medium",
+        "task_type": 2,
+        "project": 2,
+        "assignees": [
+            6
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 6,
+    "fields": {
+        "name": "Build API Endpoints",
+        "description": "Develop secure and efficient API endpoints for data synchronization across multiple platforms.",
+        "deadline": "2025-03-01",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.490Z",
+        "priority": "high",
+        "task_type": 1,
+        "project": 4,
+        "assignees": [
+            7
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 7,
+    "fields": {
+        "name": "Enhance Security Protocols",
+        "description": "Implement advanced security protocols to protect user data and prevent potential breaches.",
+        "deadline": "2025-08-01",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.494Z",
+        "priority": "urgent",
+        "task_type": 1,
+        "project": 3,
+        "assignees": [
+            8
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 8,
+    "fields": {
+        "name": "Refactor Backend Code",
+        "description": "Improve the maintainability of backend code by refactoring outdated modules.",
+        "deadline": "2025-05-15",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.498Z",
+        "priority": "medium",
+        "task_type": 1,
+        "project": 1,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 9,
+    "fields": {
+        "name": "Add Unit Tests",
+        "description": "Increase test coverage by adding unit tests for core functionalities.",
+        "deadline": "2025-04-10",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.502Z",
+        "priority": "high",
+        "task_type": 2,
+        "project": 3,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 10,
+    "fields": {
+        "name": "Optimize Frontend Performance",
+        "description": "Enhance frontend performance by optimizing resource loading and reducing payload size.",
+        "deadline": "2025-03-20",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.506Z",
+        "priority": "high",
+        "task_type": 1,
+        "project": 2,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 11,
+    "fields": {
+        "name": "Implement Feature X",
+        "description": "Add new feature X based on user feedback and market trends.",
+        "deadline": "2025-06-10",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.510Z",
+        "priority": "urgent",
+        "task_type": 1,
+        "project": 4,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 12,
+    "fields": {
+        "name": "Update Documentation",
+        "description": "Revise and update project documentation to reflect recent changes.",
+        "deadline": "2025-07-01",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.513Z",
+        "priority": "medium",
+        "task_type": 2,
+        "project": 1,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 13,
+    "fields": {
+        "name": "Fix Critical Bug",
+        "description": "Resolve a critical bug reported by the QA team during integration testing.",
+        "deadline": "2025-02-28",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.517Z",
+        "priority": "urgent",
+        "task_type": 2,
+        "project": 2,
+        "assignees": [
+            2
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 14,
+    "fields": {
+        "name": "Create Design Mockups",
+        "description": "Prepare initial design mockups for the client presentation.",
+        "deadline": "2025-05-05",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.521Z",
+        "priority": "medium",
+        "task_type": 1,
+        "project": 3,
+        "assignees": [
+            3
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 15,
+    "fields": {
+        "name": "Integrate Third-Party API",
+        "description": "Integrate a third-party API to enhance application functionality.",
+        "deadline": "2025-04-25",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.524Z",
+        "priority": "high",
+        "task_type": 1,
+        "project": 4,
+        "assignees": [
+            4
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 16,
+    "fields": {
+        "name": "Run Security Audit",
+        "description": "Conduct a comprehensive security audit to identify vulnerabilities.",
+        "deadline": "2025-03-15",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.529Z",
+        "priority": "urgent",
+        "task_type": 2,
+        "project": 1,
+        "assignees": [
+            5
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 17,
+    "fields": {
+        "name": "Set Up CI/CD Pipeline",
+        "description": "Automate build and deployment processes by setting up a CI/CD pipeline.",
+        "deadline": "2025-06-20",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.533Z",
+        "priority": "high",
+        "task_type": 1,
+        "project": 2,
+        "assignees": [
+            6
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 18,
+    "fields": {
+        "name": "Optimize Search Algorithm",
+        "description": "Improve the efficiency of the search algorithm for faster query responses.",
+        "deadline": "2025-05-30",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.537Z",
+        "priority": "medium",
+        "task_type": 1,
+        "project": 4,
+        "assignees": [
+            7
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 19,
+    "fields": {
+        "name": "Prepare User Training",
+        "description": "Develop and deliver training materials for end-users.",
+        "deadline": "2025-07-15",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.540Z",
+        "priority": "medium",
+        "task_type": 2,
+        "project": 3,
+        "assignees": [
+            8
+        ]
+    }
+},
+{
+    "model": "taskhub.task",
+    "pk": 20,
+    "fields": {
+        "name": "Update Testing Framework",
+        "description": "Upgrade the existing testing framework to support new features.",
+        "deadline": "2025-04-18",
+        "is_completed": false,
+        "created_at": "2024-12-17T15:22:53.544Z",
+        "priority": "high",
+        "task_type": 2,
+        "project": 2,
+        "assignees": [
+            2
+        ]
+    }
+}
+]
