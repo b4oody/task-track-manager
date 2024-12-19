@@ -2,6 +2,7 @@
 
 Task Manager is a simple web application for task management. The app allows users to create, edit, delete tasks, work with teams, projects, and organize workflows.
 
+
 ## 🖥️ Deployment
 
 The project is deployed on **Render**.
@@ -13,7 +14,6 @@ Pre-configured account for login:
 - 🔒 **Password**: `Qw$rty123`
 Alternatively, you can **register a new account**.
 
-  
    ⚠️ Important Information
       Please note that the website may experience downtime or instability due to issues with the hosting provider. 
       We are working diligently to ensure stable operation and apologize for any inconvenience caused.
@@ -129,6 +129,17 @@ To run the project locally:
 7. **Open the application**:
    - The server will run at `http://127.0.0.1:8000`
 
+<<<<<<< HEAD
+=======
+## 🖥️ Deployment
+
+The project is deployed on **Render**. Pre-configured account for login:
+- 🔑 **Login**: `admin`
+- 🔒 **Password**: `Qw$rty123`
+
+Alternatively, you can **register a new account**.
+
+>>>>>>> b2905b46184e3d06b5d1db54d31dfd75a380ae98
 ## 🧩 Project Structure
 
 ```
