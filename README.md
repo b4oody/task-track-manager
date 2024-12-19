@@ -84,9 +84,8 @@ To run the project locally:
 
 5. **Load database data** (if needed):
    ```bash
-   python manage.py load_fixture
+   python manage.py loaddata dump.json
    ```
-   - Script is located in `taskhub/management/commands/load_fixture.py`.
    - Data is taken from the `fixture_data.json` file in the root directory.
 
 6. **Run the server**:
